@@ -1,0 +1,54 @@
+import { createRouter, createWebHistory } from "vue-router";
+
+import Home from "../views/guest/Home.vue";
+import Venue from "../views/guest/Venue.vue";
+import DetailVenue from "../views/guest/DetailVenue.vue";
+
+import EmailVerification from "../views/auth/EmailVerification.vue";
+import BasicProfile from "../views/auth/BasicProfile.vue";
+
+import Dashboard from "../views/users/Dashboard.vue";
+import NotFound from "../views/errors/NotFound.vue"
+
+const router = createRouter({
+   history: createWebHistory(import.meta.env.BASE_URL),
+   routes: [
+      {
+         path: "/",
+         name: "Home",
+         component: Home,
+      },
+      {
+         path: "/venues",
+         name: "Venue",
+         component: Venue,
+      },
+      {
+         path: "/v/:id/:venueName",
+         name: "Detail Venue",
+         component: DetailVenue,
+      },
+      {
+         path: "/auth/otp/email",
+         name: "Email Verification",
+         component: EmailVerification,
+      },
+      {
+         path: "/update-basic-profile",
+         name: "Update Basic Profile",
+         component: BasicProfile,
+      },
+      {
+         path: "/dashboard",
+         name: "Dashboard",
+         component: Dashboard,
+      },
+      {
+         path: "/:pathMatch(.*)*",
+         name: "Not Found",
+         component: NotFound,
+      },
+   ],
+});
+
+export default router;
