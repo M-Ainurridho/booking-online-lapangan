@@ -36,10 +36,10 @@
                         <p class="lh-base text-opacity-75 fs-6 m-0">{{ venue.desc }}</p>
                      </div>
                      <div class="venue-fasilitas mt-3">
-                        <h4 class="mb-3">Fasilitas</h4>
+                        <h5 class="mb-3">Fasilitas</h5>
                         <div class="row mb-2">
                            <div class="col-4"><i class="fa-solid fa-fw fa-car"></i> Parkir Mobil</div>
-                           <div class="col-4"><i class="fa-solid fa-fw fa-motorcycle"></i> Mini Motor</div>
+                           <div class="col-4"><i class="fa-solid fa-fw fa-motorcycle"></i> Parkir Motor</div>
                            <div class="col-4"><i class="fa-solid fa-fw fa-toilet"></i> Toilet</div>
                         </div>
                         <div class="row mb-2">
@@ -47,7 +47,6 @@
                            <div class="col-4"><i class="fa-solid fa-fw fa-cookie-bite"></i> Jual Makanan Ringan</div>
                            <div class="col-4"><i class="fa-solid fa-fw fa-mosque"></i> Musholla</div>
                         </div>
-                        <!-- <i class="bx bx-football me-1"></i> Mini Soccer -->
                      </div>
                   </div>
                   <div class="col-12 col-lg-4">
@@ -61,6 +60,94 @@
                      <div class="row mb-4">
                         <div class="col-12 booking-rules shadow">
                            <h5 class="fs-6 text-center mb-0 p-2">Rules Booking Lapangan</h5>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+
+      <section id="pilih-lapangan" class="my-5">
+         <div class="row">
+            <div class="col-md-11 col-lg-9 mx-auto">
+               <h4>
+                  <i class="bx bx-play text-navy bg-navy-50 rounded-circle"></i>
+                  Pilih Lapangan
+               </h4>
+
+               <div class="row">
+                  <div class="col-12 bg-white shadow-lg rounded-4 p-3">
+                     <div class="row">
+                        <div class="col-7 d-flex justify-content-between">
+                           <div class="bg-navy booking-date p-2 pt-1 rounded-3 text-white">
+                              <h6 class="lead fs-xs text-center">Senin</h6>
+                              <span>13 Nov</span>
+                           </div>
+                           <div class="booking-date p-2 pt-1 rounded-3">
+                              <h6 class="lead fs-xs text-center">Selasa</h6>
+                              <span>14 Nov</span>
+                           </div>
+                           <div class="booking-date p-2 pt-1 rounded-3">
+                              <h6 class="lead fs-xs text-center">Rabu</h6>
+                              <span>15 Nov</span>
+                           </div>
+                           <div class="booking-date p-2 pt-1 rounded-3">
+                              <h6 class="lead fs-xs text-center">Kamis</h6>
+                              <span>16 Nov</span>
+                           </div>
+                           <div class="booking-date p-2 pt-1 rounded-3">
+                              <h6 class="lead fs-xs text-center">Jum'at</h6>
+                              <span>17 Nov</span>
+                           </div>
+                           <div class="booking-date p-2 pt-1 rounded-3">
+                              <h6 class="lead fs-xs text-center">Sabtu</h6>
+                              <span>18 Nov</span>
+                           </div>
+                           <div class="booking-date p-2 pt-1 rounded-3">
+                              <h6 class="lead fs-xs text-center">Minggu</h6>
+                              <span>19 Nov</span>
+                           </div>
+                        </div>
+                        <div class="col-5 d-flex align-items-center justify-content-between border-start">
+                           <i class="bx bx-calendar fs-3"></i>
+
+                           <p class="fs-6 border rounded-3 my-auto px-3 fw-medium d-flex align-items-center column-gap-1"><span>Filter Waktu</span> <i class="bx bx-slider"></i></p>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+
+               <div class="row">
+                  <div class="col-12">
+                     <div class="row px-3 py-4 border-bottom detail-lapangan">
+                        <div class="col-4">
+                           <img src="../../assets/images/venue/badminton.jpg" alt="gambar" class="w-100 object-fit-cover rounded-3" />
+                        </div>
+                        <div class="col-8 border-start">
+                           <h5>Lap 1</h5>
+                           <div class="spek-lapangan">
+                              <p class="m-0 fs-6"><i class="bx bx-basketball me-1"></i> Basketball</p>
+                              <p class="m-0 fs-6"><i class="bx bx-map-pin me-1"></i> Indoor</p>
+                              <p class="m-0 fs-6"><i class="bx bx-water me-1"></i> Lantai</p>
+                           </div>
+                           <button class="border bg-navy text-white fw-semibold py-2 px-5 mt-3 rounded-3 d-flex align-items-center column-gap-2">7 Lapangan Tersedia <i class="bx bx-up-arrow-circle fs-4"></i></button>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-12">
+                     <div class="row px-3 py-4 border-bottom detail-lapangan">
+                        <div class="col-4">
+                           <img src="../../assets/images/venue/badminton.jpg" alt="gambar" class="w-100 object-fit-cover rounded-3" />
+                        </div>
+                        <div class="col-8 border-start">
+                           <h5>Lap 2</h5>
+                           <div class="spek-lapangan">
+                              <p class="m-0 fs-6"><i class="bx bx-basketball me-1"></i> Basketball</p>
+                              <p class="m-0 fs-6"><i class="bx bx-map-pin me-1"></i> Indoor</p>
+                              <p class="m-0 fs-6"><i class="bx bx-water me-1"></i> Lantai</p>
+                           </div>
+                           <button class="border bg-navy text-white fw-semibold py-2 px-5 mt-3 rounded-3 d-flex align-items-center column-gap-2">7 Lapangan Tersedia <i class="bx bx-up-arrow-circle fs-4"></i></button>
                         </div>
                      </div>
                   </div>
@@ -112,6 +199,18 @@ export default {
 
 sub {
    transform: translateY(-4px);
+}
+
+.booking-date h6 {
+   transform: translateY(8px);
+}
+
+.detail-lapangan img {
+   height: 170px;
+}
+
+.spek-lapangan p {
+   margin-bottom: -12px !important;
 }
 
 @media screen and (max-width: 992px) {
