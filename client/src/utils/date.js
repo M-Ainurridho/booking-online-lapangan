@@ -1,8 +1,3 @@
-const ul = document.querySelector("ul");
-const now = Date.now();
-const week = now + 1000 * 60 * 60 * 24 * 7;
-const dates = [];
-
 const getDay = (day) => {
    const days = ["Senin", "Selasa", "Rabu", "Kamis", "Jum'at", "Sabtu", "Minggu"];
    switch (day) {
@@ -39,9 +34,17 @@ const getDay = (day) => {
    return day;
 };
 
-for (let i = now; i < week; i += 1000 * 60 * 60 * 24) {
-   const date = new Date(i).toDateString().split(" ");
-   let day = getDay(date[0]);
+export const dates = () => {
+   const jadwal = [];
+   const now = Date.now();
+   const week = now + 1000 * 60 * 60 * 24 * 7;
 
-   dates.push(`${day}, ${date[2]} ${date[1]} ${date[3]}`);
-}
+   for (let i = now; i < week; i += 1000 * 60 * 60 * 24) {
+      const date = new Date(i).toDateString().split(" ");
+      let day = getDay(date[0]);
+
+      jadwal.push([day, `${date[2]} ${date[1]}`]);
+   }
+
+   return jadwal;
+};

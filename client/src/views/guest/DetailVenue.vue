@@ -80,33 +80,9 @@
                   <div class="col-12 bg-white shadow-lg rounded-4 p-3">
                      <div class="row">
                         <div class="col-7 d-flex justify-content-between">
-                           <div class="bg-navy booking-date p-2 pt-1 rounded-3 text-white">
-                              <h6 class="lead fs-xs text-center">Senin</h6>
-                              <span>13 Nov</span>
-                           </div>
-                           <div class="booking-date p-2 pt-1 rounded-3">
-                              <h6 class="lead fs-xs text-center">Selasa</h6>
-                              <span>14 Nov</span>
-                           </div>
-                           <div class="booking-date p-2 pt-1 rounded-3">
-                              <h6 class="lead fs-xs text-center">Rabu</h6>
-                              <span>15 Nov</span>
-                           </div>
-                           <div class="booking-date p-2 pt-1 rounded-3">
-                              <h6 class="lead fs-xs text-center">Kamis</h6>
-                              <span>16 Nov</span>
-                           </div>
-                           <div class="booking-date p-2 pt-1 rounded-3">
-                              <h6 class="lead fs-xs text-center">Jum'at</h6>
-                              <span>17 Nov</span>
-                           </div>
-                           <div class="booking-date p-2 pt-1 rounded-3">
-                              <h6 class="lead fs-xs text-center">Sabtu</h6>
-                              <span>18 Nov</span>
-                           </div>
-                           <div class="booking-date p-2 pt-1 rounded-3">
-                              <h6 class="lead fs-xs text-center">Minggu</h6>
-                              <span>19 Nov</span>
+                           <div ref="jadwal" v-for="(date, index) in jadwal" :key="index" class="booking-date p-2 pt-1 rounded-3" @click="currentlySchedule(index)">
+                              <h6 class="lead fs-xs text-center">{{ date[0] }}</h6>
+                              <span>{{ date[1] }}</span>
                            </div>
                         </div>
                         <div class="col-5 d-flex align-items-center justify-content-between border-start">
@@ -163,6 +139,7 @@ import GuestLayout from "../../layouts/GuestLayout.vue";
 import BreadCrumbs from "./components/BreadCrumbs.vue";
 import { RouterLink } from "vue-router";
 import venues from "../../utils/data";
+import { dates } from "../../utils/date";
 
 export default {
    name: "Detail Venue",
@@ -170,11 +147,26 @@ export default {
    data() {
       return {
          venue: null,
+         jadwal: [],
+         dropdown: false,
       };
    },
    created() {
+      this.jadwal = dates();
       const { id } = this.$route.params;
       this.venue = venues.find((v) => v.id == id);
+   },
+   mounted() {
+      this.$refs.jadwal[0].classList.add("bg-navy", "text-white");
+   },
+   methods: {
+      currentlySchedule(index) {
+         const schedules = this.$refs.jadwal;
+         for (let i = 0; i < schedules.length; i++) {
+            schedules[i].classList.remove("bg-navy", "text-white");
+         }
+         this.$refs.jadwal[index].classList.add("bg-navy", "text-white");
+      },
    },
 };
 </script>
@@ -199,6 +191,10 @@ export default {
 
 sub {
    transform: translateY(-4px);
+}
+
+.booking-date {
+   cursor: pointer;
 }
 
 .booking-date h6 {
