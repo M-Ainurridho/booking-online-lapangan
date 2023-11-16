@@ -14,11 +14,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 const port = process.env.SERVER_PORT || 5000;
 
 // Routes
-const userRouter = require("./routes/user-router");
 const authRouter = require("./routes/auth-router");
+const userRouter = require("./routes/user-router");
+const venueRouter = require("./routes/venue-router");
 
-app.use("/user", userRouter);
 app.use("/auth", authRouter);
+app.use("/user", userRouter);
+app.use("/venue", venueRouter);
 
 app.listen(port, () => {
    console.log(`Booking Online Lapangan running on http://localhost:${port}`);
