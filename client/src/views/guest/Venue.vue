@@ -9,7 +9,7 @@
             <div class="col-md-9 mx-auto">
                <div class="row">
                   <div class="col-6">
-                     <p class="fs-6 fw-bold"><span class="fw-light">Menampilkan</span> 3 venue tersedia</p>
+                     <p class="fs-6 fw-bold"><span class="fw-light">Menampilkan</span> {{ venues.length }} venue tersedia</p>
                   </div>
                   <div class="col-6 text-end">
                      <p class="fs-6">Urutkan Berdasarkan harga terendah</p>
@@ -17,7 +17,7 @@
                </div>
 
                <div class="row row-gap-4">
-                  <VenueCard v-for="venue of venues" :key="venue.id" :venue-id="venue.id" :venue-name="venue.name" :venue-image="venue.image" :venue-price="venue.price" :venue-city="venue.city" :venue-rating="venue.rating" />
+                  <VenueCard v-for="venue of venues" :key="venue._id" :venue-id="venue._id" :venue-name="venue.name" :venue-image="venue.images[0]" :venue-price="venue.price" :venue-city="venue.city" :venue-rating="venue.rating" />
                </div>
             </div>
          </div>
@@ -29,8 +29,8 @@
 import GuestLayout from "../../layouts/GuestLayout.vue";
 import Banner from "./components/Banner.vue";
 import VenueCard from "./components/VenueCard.vue";
-import Venues from "../../utils/data";
 import { setTitle } from "../../utils";
+import axios from "axios";
 
 export default {
    name: "Venue",
@@ -40,9 +40,15 @@ export default {
          venues: null,
       };
    },
-   created() {
-      this.venues = Venues;
+   async created() {
       setTitle("BVM - BOL Venue Management");
+
+      try {
+         const response = await axios.get("http://localhost:3000/venue");
+         this.venues = response.data.payload;
+      } catch (err) {
+         console.log("Error : " + err);
+      }
    },
 };
 </script>
