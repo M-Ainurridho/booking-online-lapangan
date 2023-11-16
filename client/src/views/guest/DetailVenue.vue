@@ -77,12 +77,12 @@
                </h4>
 
                <div class="row">
-                  <div class="col-12 bg-white shadow-lg rounded-4 p-3">
+                  <div class="col-12 bg-white shadow rounded-4 p-3">
                      <div class="row">
                         <div class="col-7 d-flex justify-content-between">
-                           <div ref="jadwal" v-for="(date, index) in jadwal" :key="index" class="booking-date p-2 pt-1 rounded-3" @click="currentlySchedule(index)">
+                           <div ref="jadwal" v-for="(date, index) in jadwal" :key="index" class="booking-date p-2 pt-1 rounded-3" @click="currentlySchedule(index, date)">
                               <h6 class="lead fs-xs text-center">{{ date[0] }}</h6>
-                              <span>{{ date[1] }}</span>
+                              <span>{{ date[1] }} {{ date[2] }}</span>
                            </div>
                         </div>
                         <div class="col-5 d-flex align-items-center justify-content-between border-start">
@@ -108,55 +108,13 @@
                               <p class="m-0 fs-6"><i class="bx bx-water me-1"></i> Lantai</p>
                            </div>
                            <button class="border bg-navy text-white fw-semibold px-3 py-2 mt-3 rounded-3 d-flex align-items-center column-gap-2" @click="dropdown = !dropdown">
-                              8 Lapangan Tersedia <i class="bx fs-4" :class="dropdown ? 'bx-down-arrow-circle' : 'bx-up-arrow-circle'"></i>
+                              {{ bookingTime.length }} Lapangan Tersedia <i class="bx fs-4" :class="dropdown ? 'bx-down-arrow-circle' : 'bx-up-arrow-circle'"></i>
                            </button>
                            <div v-if="dropdown" class="waktu-booking mt-4 pt-3 border-top">
-                              <div class="card">
+                              <div v-for="time in bookingTime" class="card">
                                  <div class="card-body text-center">
-                                    <div class="card-title m-0 fw-semibold">17:00 - 18:00</div>
-                                    <div class="card-text text-opacity-50" style="font-size: 14px">Rp30.000</div>
-                                 </div>
-                              </div>
-                              <div class="card">
-                                 <div class="card-body text-center">
-                                    <div class="card-title m-0 fw-semibold">17:00 - 18:00</div>
-                                    <div class="card-text text-opacity-50" style="font-size: 14px">Rp30.000</div>
-                                 </div>
-                              </div>
-                              <div class="card">
-                                 <div class="card-body text-center">
-                                    <div class="card-title m-0 fw-semibold">17:00 - 18:00</div>
-                                    <div class="card-text text-opacity-50" style="font-size: 14px">Rp30.000</div>
-                                 </div>
-                              </div>
-                              <div class="card">
-                                 <div class="card-body text-center">
-                                    <div class="card-title m-0 fw-semibold">17:00 - 18:00</div>
-                                    <div class="card-text text-opacity-50" style="font-size: 14px">Rp30.000</div>
-                                 </div>
-                              </div>
-                              <div class="card">
-                                 <div class="card-body text-center">
-                                    <div class="card-title m-0 fw-semibold">17:00 - 18:00</div>
-                                    <div class="card-text text-opacity-50" style="font-size: 14px">Rp30.000</div>
-                                 </div>
-                              </div>
-                              <div class="card">
-                                 <div class="card-body text-center">
-                                    <div class="card-title m-0 fw-semibold">17:00 - 18:00</div>
-                                    <div class="card-text text-opacity-50" style="font-size: 14px">Rp30.000</div>
-                                 </div>
-                              </div>
-                              <div class="card">
-                                 <div class="card-body text-center">
-                                    <div class="card-title m-0 fw-semibold">17:00 - 18:00</div>
-                                    <div class="card-text text-opacity-50" style="font-size: 14px">Rp30.000</div>
-                                 </div>
-                              </div>
-                              <div class="card">
-                                 <div class="card-body text-center">
-                                    <div class="card-title m-0 fw-semibold">17:00 - 18:00</div>
-                                    <div class="card-text text-opacity-50" style="font-size: 14px">Rp30.000</div>
+                                    <div class="card-title m-0 fw-semibold">{{ time }}</div>
+                                    <div class="card-text text-opacity-50" style="font-size: 14px">Rp{{ this.venue.price }}</div>
                                  </div>
                               </div>
                            </div>
@@ -175,7 +133,7 @@ import GuestLayout from "../../layouts/GuestLayout.vue";
 import BreadCrumbs from "./components/BreadCrumbs.vue";
 import { RouterLink } from "vue-router";
 import venues from "../../utils/data";
-import { dates } from "../../utils/date";
+import { dates, times } from "../../utils/date";
 
 export default {
    name: "Detail Venue",
@@ -185,6 +143,7 @@ export default {
          venue: null,
          jadwal: [],
          dropdown: false,
+         bookingTime: [],
       };
    },
    created() {
@@ -194,14 +153,38 @@ export default {
    },
    mounted() {
       this.$refs.jadwal[0].classList.add("bg-navy", "text-white");
+
+      const arrTime = this.venue.open.split(" - ");
+      const result = times(arrTime, this.jadwal[0]);
+
+      for (let i = 0; i < result.length; i++) {
+         this.bookingTime.push(
+            `${new Date(result[i].start).getHours()}:${new Date(result[i].start).getMinutes().toString().length > 1 ? new Date(result[i].start).getMinutes() : "00"} - ${new Date(result[i].end).getHours()}:${
+               new Date(result[i].end).getMinutes().toString().length > 1 ? new Date(result[i].end).getMinutes() : "00"
+            }`
+         );
+      }
    },
    methods: {
-      currentlySchedule(index) {
+      currentlySchedule(index, date) {
          const schedules = this.$refs.jadwal;
          for (let i = 0; i < schedules.length; i++) {
             schedules[i].classList.remove("bg-navy", "text-white");
          }
          this.$refs.jadwal[index].classList.add("bg-navy", "text-white");
+
+         const arrTime = this.venue.open.split(" - ");
+         const arrJadwal = [`${date[0]}`, `${date[1]}`, `${date[2]}`, `${date[3]}`];
+         const result = times(arrTime, arrJadwal);
+
+         this.bookingTime = [];
+         for (let i = 0; i < result.length; i++) {
+            this.bookingTime.push(
+               `${new Date(result[i].start).getHours()}:${new Date(result[i].start).getMinutes().toString().length > 1 ? new Date(result[i].start).getMinutes() : "00"} - ${new Date(result[i].end).getHours()}:${
+                  new Date(result[i].end).getMinutes().toString().length > 1 ? new Date(result[i].end).getMinutes() : "00"
+               }`
+            );
+         }
       },
    },
 };

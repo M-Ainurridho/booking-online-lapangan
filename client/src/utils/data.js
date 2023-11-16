@@ -8,6 +8,7 @@ export default [
       location: "Jalan Madura",
       city: "Depok",
       rating: "4.70",
+      open: "12:00 - 22:00",
    },
    {
       id: 2,
@@ -18,6 +19,7 @@ export default [
       location: "Jalan Enggano",
       city: "Mataram",
       rating: "4.99",
+      open: "07:00 - 22:00",
    },
    {
       id: 3,
@@ -28,6 +30,7 @@ export default [
       location: "Jalan Bali",
       city: "Palembang",
       rating: "4.39",
+      open: "07:30 - 22:00",
    },
    {
       id: 4,
@@ -38,6 +41,7 @@ export default [
       location: "Jalan Madura",
       city: "Depok",
       rating: "4.70",
+      open: "07:00 - 22:00",
    },
    {
       id: 5,
@@ -48,6 +52,7 @@ export default [
       location: "Jalan Enggano",
       city: "Mataram",
       rating: "4.99",
+      open: "08:30 - 22:00",
    },
    {
       id: 6,
@@ -58,5 +63,6 @@ export default [
       location: "Jalan Bali",
       city: "Palembang",
       rating: "4.39",
+      open: "07:00 - 22:00",
    },
 ];

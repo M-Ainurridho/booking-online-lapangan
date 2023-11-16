@@ -43,8 +43,23 @@ export const dates = () => {
       const date = new Date(i).toDateString().split(" ");
       let day = getDay(date[0]);
 
-      jadwal.push([day, `${date[2]} ${date[1]}`]);
+      jadwal.push([day, date[2], date[1], date[3]]);
    }
 
    return jadwal;
+};
+
+export const times = ([open, close], [day, date, month, year]) => {
+   const waktuBooking = [];
+
+   const start = new Date(`${month}, ${date}, ${year} ${open}:00`).getTime();
+   const end = new Date(`${month}, ${date}, ${year} ${close}:00`).getTime();
+
+   for (let i = start; i < end; i += 1000 * 60 * 60) {
+      waktuBooking.push({ start: i, end: i + 1000 * 60 * 60 });
+   }
+
+   const filter = waktuBooking.filter((time) => time.end != end);
+
+   return filter;
 };
