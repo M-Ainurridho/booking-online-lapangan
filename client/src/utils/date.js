@@ -59,7 +59,7 @@ export const times = ([open, close], [day, date, month, year]) => {
       waktuBooking.push({ start: i, end: i + 1000 * 60 * 60 });
    }
 
-   const filter = waktuBooking.filter((time) => time.end != end);
+   // const filter = waktuBooking.filter((time) => time.end != end);
 
-   return filter;
+   return waktuBooking;
 };

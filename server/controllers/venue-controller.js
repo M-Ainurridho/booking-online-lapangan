@@ -15,7 +15,7 @@ const getVenueById = async (req, res) => {
 
    try {
       const venue = await Venue.findOne({ _id });
-      response(200, "Get All Venues", res, venue);
+      venue === null ? response(404, "Detail Not Found", res, venue) : response(200, "Get All Venues", res, venue);
    } catch (err) {
       console.log("Error:", err);
    }

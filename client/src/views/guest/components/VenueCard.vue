@@ -11,7 +11,7 @@
             </div>
             <div class="venue-price">
                <small>Mulai dari</small>
-               <p class="fw-bold">Rp. {{ venuePrice }}<sub>/sesi</sub></p>
+               <p class="fw-bold">{{ printPrice }}<sub>/sesi</sub></p>
             </div>
          </div>
       </div>
@@ -19,19 +19,17 @@
 </template>
 
 <script>
+import { toRupiah } from "../../../utils";
 export default {
    props: ["venueId", "venueName", "venueImage", "venuePrice", "venueCity", "venueRating"],
-   data() {
-      return {
-         routeName: "",
-      };
-   },
-   created() {
-      this.routeName = this.venueName.split(" ").join("-").toLowerCase();
-   },
    methods: {
       navigate() {
-         this.$router.push({ name: "Detail Venue", params: { id: this.venueId, venueName: this.routeName } });
+         this.$router.push({ name: "Detail Venue", params: { _id: this.venueId } });
+      },
+   },
+   computed: {
+      printPrice() {
+         return toRupiah(this.venuePrice);
       },
    },
 };

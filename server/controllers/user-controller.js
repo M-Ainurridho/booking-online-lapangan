@@ -25,4 +25,19 @@ const getUserById = async (req, res) => {
    }
 };
 
-module.exports = { getAllUsers, getUserById };
+const getUserBookingVenue = async (req, res) => {
+   const { day } = req.params;
+
+   try {
+      const data = await User.find({ "booking.day": day });
+
+      if (data.length < 1) return response(404, "There aren't Booking Venue", res, data);
+
+      const booked = data.map(({ booking }) => booking);
+      response(200, "Get Booking Data", res, booked.flat());
+   } catch (err) {
+      console.log("Error : " + err);
+   }
+};
+
+module.exports = { getAllUsers, getUserById, getUserBookingVenue };

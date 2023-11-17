@@ -9,6 +9,7 @@ const userSchema = new Schema({
       type: String,
       default: "nophoto.jpg",
    },
+   booking: [Object],
    noHp: String,
    isActive: {
       type: Boolean,

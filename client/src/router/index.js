@@ -8,7 +8,7 @@ import EmailVerification from "../views/auth/EmailVerification.vue";
 import BasicProfile from "../views/auth/BasicProfile.vue";
 
 import Dashboard from "../views/users/Dashboard.vue";
-import NotFound from "../views/errors/NotFound.vue"
+import NotFound from "../views/errors/NotFound.vue";
 
 const router = createRouter({
    history: createWebHistory(import.meta.env.BASE_URL),
@@ -24,7 +24,7 @@ const router = createRouter({
          component: Venue,
       },
       {
-         path: "/v/:id/:venueName",
+         path: "/v/:_id",
          name: "Detail Venue",
          component: DetailVenue,
       },

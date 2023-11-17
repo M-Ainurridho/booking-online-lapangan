@@ -12,20 +12,9 @@
 </template>
 
 <script>
-import venues from "../../../utils/data";
-
 export default {
    name: "BreadCrumbs",
-   data() {
-      return {
-         venueName: null,
-      };
-   },
-   created() {
-      const { id } = this.$route.params;
-      const venue = venues.find((v) => v.id == id && v.name);
-      this.venueName = venue.name;
-   },
+   props: ["venueName"],
 };
 </script>
 

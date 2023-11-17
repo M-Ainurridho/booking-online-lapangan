@@ -4,7 +4,7 @@
          <h1 class="text-white fw-bold">Booking Lapangan Online Terbaik</h1>
       </Banner>
 
-      <section id="venue" class="py-5 px-3">
+      <section v-show="!loading" id="venue" class="py-5 px-3">
          <div class="row">
             <div class="col-md-9 mx-auto">
                <div class="row">
@@ -37,17 +37,21 @@ export default {
    components: { GuestLayout, Banner, VenueCard },
    data() {
       return {
-         venues: null,
+         venues: [],
+         loading: false,
       };
    },
    async created() {
       setTitle("BVM - BOL Venue Management");
 
+      this.loading = !this.loading;
       try {
          const response = await axios.get("http://localhost:3000/venue");
          this.venues = response.data.payload;
       } catch (err) {
          console.log("Error : " + err);
+      } finally {
+         this.loading = !this.loading;
       }
    },
 };
