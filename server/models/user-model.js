@@ -9,7 +9,17 @@ const userSchema = new Schema({
       type: String,
       default: "nophoto.jpg",
    },
-   booking: [Object],
+   booking: [
+      {
+         _id: mongoose.Schema.Types.ObjectId,
+         day: String,
+         fieldName: String,
+         playTime: {
+            start: Number,
+            end: Number,
+         },
+      },
+   ],
    noHp: String,
    isActive: {
       type: Boolean,

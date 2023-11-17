@@ -20,4 +20,12 @@ export const store = reactive({
          this.modal = true;
       }
    },
+   cart: [],
+   addCart(data) {
+      this.cart.push(data);
+   },
+   deleteCart({ fieldName, start }) {
+      const filter = this.cart.filter((c) => c.fieldName != fieldName || c.start != start);
+      this.cart = filter;
+   },
 });

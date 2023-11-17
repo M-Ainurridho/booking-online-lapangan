@@ -104,27 +104,7 @@
                   </div>
 
                   <div class="row">
-                     <div class="col-12">
-                        <div class="row px-3 py-4 border-bottom detail-lapangan">
-                           <div class="col-4">
-                              <img src="../../assets/images/venue/badminton.jpg" alt="gambar" class="w-100 object-fit-cover rounded-3" />
-                           </div>
-                           <div class="col-8 border-start">
-                              <h5>Lap 1</h5>
-                              <div class="spek-lapangan">
-                                 <p class="m-0 fs-6"><i class="bx bx-basketball me-1"></i> Basketball</p>
-                                 <p class="m-0 fs-6"><i class="bx bx-map-pin me-1"></i> Indoor</p>
-                                 <p class="m-0 fs-6"><i class="bx bx-water me-1"></i> Lantai</p>
-                              </div>
-                              <button class="border bg-navy text-white fw-semibold px-3 py-2 mt-3 rounded-3 d-flex align-items-center column-gap-2" @click="dropdown = !dropdown">
-                                 {{ bookingTime.length - booked.length }} Lapangan Tersedia <i class="bx fs-4" :class="dropdown ? 'bx-down-arrow-circle' : 'bx-up-arrow-circle'"></i>
-                              </button>
-                              <div v-if="dropdown" class="waktu-booking mt-4 pt-3 border-top">
-                                 <BookingTime v-for="(time, i) in bookingTime" :key="i" :start="time.start" :end="time.end" :venue-price="venue.price" :booked="booked" />
-                              </div>
-                           </div>
-                        </div>
-                     </div>
+                     <DetailLapangan v-for="{ _id, name } in venue.fields" :key="_id" :field-id="_id" :field-name="name" :bookingTime="bookingTime" :bookedTime="booked" :venue-price="venue.price" :closeDropdown="closeDropdown" />
                   </div>
                </div>
             </div>
@@ -136,7 +116,7 @@
 <script>
 import GuestLayout from "../../layouts/GuestLayout.vue";
 import BreadCrumbs from "./components/BreadCrumbs.vue";
-import BookingTime from "./components/BookingTime.vue";
+import DetailLapangan from "./components/DetailLapangan.vue";
 
 import { RouterLink } from "vue-router";
 import { dates, times } from "../../utils/date";
@@ -145,16 +125,17 @@ import axios from "axios";
 
 export default {
    name: "Detail Venue",
-   components: { GuestLayout, BreadCrumbs, RouterLink, BookingTime },
+   components: { GuestLayout, BreadCrumbs, RouterLink, DetailLapangan },
    data() {
       return {
          venue: {},
          jadwal: [],
-         dropdown: false,
+         closeDropdown: false,
          bookingTime: [],
          booked: [],
          notFound: false,
          loading: false,
+         lapangan: ["Lap 1", "Lap 2"],
       };
    },
    async created() {
@@ -196,6 +177,9 @@ export default {
          }
          this.$refs.jadwal[index].classList.add("bg-navy", "text-white");
 
+         const arrTime = this.venue.open.split(" - ");
+         this.bookingTime = times(arrTime, [null, date[1], date[2], date[3]]);
+
          try {
             const day = `${date[2]} ${date[1]}, ${date[3]}`;
             const booking = await axios.get(`http://localhost:3000/user/booking/${day}`);
@@ -236,24 +220,6 @@ sub {
 
 .booking-date h6 {
    transform: translateY(8px);
-}
-
-.detail-lapangan img {
-   height: 170px;
-}
-
-.spek-lapangan p {
-   margin-bottom: -12px !important;
-}
-
-.spek-lapangan button {
-   width: 30%;
-}
-
-.waktu-booking {
-   display: grid;
-   grid-template-columns: repeat(4, 1fr);
-   gap: 10px;
 }
 
 @media screen and (max-width: 992px) {

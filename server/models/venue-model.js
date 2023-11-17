@@ -4,6 +4,11 @@ const venueSchema = new Schema({
    name: String,
    images: [String],
    description: String,
+   fields: [
+      {
+         _id: mongoose.Schema.Types.ObjectId,
+      },
+   ],
    price: Number,
    address: String,
    city: String,
@@ -12,7 +17,5 @@ const venueSchema = new Schema({
 });
 
 const Venue = mongoose.model("Venue", venueSchema);
-
-
 
 module.exports = Venue;

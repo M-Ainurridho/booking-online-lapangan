@@ -1,3 +1,4 @@
+const { default: mongoose } = require("mongoose");
 const User = require("../models/user-model");
 const response = require("../response");
 
@@ -33,11 +34,37 @@ const getUserBookingVenue = async (req, res) => {
 
       if (data.length < 1) return response(404, "There aren't Booking Venue", res, data);
 
-      const booked = data.map(({ booking }) => booking);
-      response(200, "Get Booking Data", res, booked.flat());
+      let booked = data.map(({ booking }) => booking);
+      booked = booked.flat().filter((b) => b.day == day);
+      response(200, "Get Booking Data", res, booked);
    } catch (err) {
       console.log("Error : " + err);
    }
 };
 
-module.exports = { getAllUsers, getUserById, getUserBookingVenue };
+const bookingField = async (req, res) => {
+   const { _id } = req.params;
+   const { fieldName, day, start, end } = req.body;
+
+   try {
+      const newBooking = await User.findOneAndUpdate(
+         { _id },
+         {
+            $push: {
+               booking: {
+                  _id: new mongoose.Types.ObjectId(),
+                  fieldName,
+                  day,
+                  playTime: { start, end },
+               },
+            },
+         }
+      );
+
+      response(200, "Booking Field", res, { fieldName, day, start, end });
+   } catch (err) {
+      console.log("Error : ", err);
+   }
+};
+
+module.exports = { getAllUsers, getUserById, getUserBookingVenue, bookingField };

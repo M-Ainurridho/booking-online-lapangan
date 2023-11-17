@@ -1,3 +1,4 @@
+const { default: mongoose } = require("mongoose");
 const Venue = require("../models/venue-model");
 const response = require("../response");
 
@@ -21,4 +22,15 @@ const getVenueById = async (req, res) => {
    }
 };
 
-module.exports = { getAllVenues, getVenueById };
+const addNewField = async (req, res) => {
+   const { _id } = req.params;
+
+   try {
+      const field = await Venue.findOneAndUpdate({ _id }, { $push: { fields: { _id: new mongoose.Types.ObjectId() } } });
+      console.log(field);
+   } catch (err) {
+      console.log("Error:", err);
+   }
+};
+
+module.exports = { getAllVenues, getVenueById, addNewField };
