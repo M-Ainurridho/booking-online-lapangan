@@ -13,3 +13,11 @@ export const toRupiah = (price) => {
    cost.pop();
    return cost.join();
 };
+
+export const timeString = (time) => {
+   return `${new Date(time).getHours()}:${new Date(time).getMinutes().toString().length > 1 ? new Date(time).getMinutes() : "00"}`;
+};
+
+export const dateString = (date) => {
+   return new Date(date).toDateString().split(" ");
+};

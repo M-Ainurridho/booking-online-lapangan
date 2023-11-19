@@ -104,7 +104,7 @@
                   </div>
 
                   <div class="row">
-                     <DetailLapangan v-for="{ _id, name } in venue.fields" :key="_id" :field-id="_id" :field-name="name" :bookingTime="bookingTime" :bookedTime="booked" :venue-price="venue.price" :closeDropdown="closeDropdown" />
+                     <DetailLapangan v-for="{ _id, name } in venue.fields" :key="_id" :field-id="_id" :field-name="name" :bookingTime="bookingTime" :bookedTime="booked" :venue="venue" :closeDropdown="closeDropdown" />
                   </div>
                </div>
             </div>
@@ -119,7 +119,7 @@ import BreadCrumbs from "./components/BreadCrumbs.vue";
 import DetailLapangan from "./components/DetailLapangan.vue";
 
 import { RouterLink } from "vue-router";
-import { dates, times } from "../../utils/date";
+import { dates, setTimes } from "../../utils/date";
 import { toRupiah } from "../../utils";
 import axios from "axios";
 
@@ -135,7 +135,6 @@ export default {
          booked: [],
          notFound: false,
          loading: false,
-         lapangan: ["Lap 1", "Lap 2"],
       };
    },
    async created() {
@@ -159,7 +158,7 @@ export default {
       }
 
       const arrTime = this.venue.open.split(" - ");
-      this.bookingTime = times(arrTime, this.jadwal[0]);
+      this.bookingTime = setTimes(arrTime, this.jadwal[0]);
    },
    computed: {
       printPrice() {
@@ -178,7 +177,7 @@ export default {
          this.$refs.jadwal[index].classList.add("bg-navy", "text-white");
 
          const arrTime = this.venue.open.split(" - ");
-         this.bookingTime = times(arrTime, [null, date[1], date[2], date[3]]);
+         this.bookingTime = setTimes(arrTime, [null, date[1], date[2], date[3]]);
 
          try {
             const day = `${date[2]} ${date[1]}, ${date[3]}`;

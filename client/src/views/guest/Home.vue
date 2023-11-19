@@ -12,8 +12,6 @@
             </div>
          </div>
       </section>
-
-      <button @click="goToDashboard">dahboard</button>
    </GuestLayout>
 </template>
 
@@ -24,11 +22,6 @@ import { setTitle } from "../../utils";
 export default {
    name: "Home",
    components: { GuestLayout },
-   methods: {
-      goToDashboard() {
-         this.$router.push("/dashboard");
-      },
-   },
    created() {
       setTitle("BOL - Super Sport Community App");
    },

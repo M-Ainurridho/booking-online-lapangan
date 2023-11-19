@@ -49,7 +49,7 @@ export const dates = () => {
    return jadwal;
 };
 
-export const times = ([open, close], [day, date, month, year]) => {
+export const setTimes = ([open, close], [day, date, month, year]) => {
    const waktuBooking = [];
 
    const start = new Date(`${month}, ${date}, ${year} ${open}:00`).getTime();

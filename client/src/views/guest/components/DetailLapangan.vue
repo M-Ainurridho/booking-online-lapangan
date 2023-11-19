@@ -15,7 +15,7 @@
                {{ bookingTime.length - booked.length }} Lapangan Tersedia <i class="bx fs-4" :class="dropdown ? 'bx-down-arrow-circle' : 'bx-up-arrow-circle'"></i>
             </button>
             <div v-if="dropdown" class="waktu-booking mt-4 pt-3 border-top">
-               <BookingTime v-for="(time, i) in bookingTime" :key="i" :field-name="fieldName" :field-id="fieldId" :booking-id="i" :start="time.start" :end="time.end" :venue-price="venuePrice" :booked="booked" />
+               <BookingTime v-for="(time, i) in bookingTime" :key="i" :field-name="fieldName" :field-id="fieldId" :booking-id="i" :start="time.start" :end="time.end" :venue-price="venue.price" :venue-name="venue.name" :booked="booked" />
             </div>
          </div>
       </div>
@@ -27,7 +27,7 @@ import BookingTime from "./BookingTime.vue";
 
 export default {
    components: { BookingTime },
-   props: ["fieldId", "fieldName", "bookingTime", "bookedTime", "venuePrice", "closeDropdown"],
+   props: ["fieldId", "fieldName", "bookingTime", "bookedTime", "venue", "closeDropdown"],
    data() {
       return {
          dropdown: false,

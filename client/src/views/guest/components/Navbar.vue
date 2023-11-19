@@ -7,7 +7,7 @@
          </RouterLink>
          <div class="d-flex align-items-center">
             <i class="bx bx-cart fs-4 me-3 cart-mobile" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-               <span class="cart-count bg-navy text-center text-white fw-bold rounded-circle">{{ store.cart.length }}</span>
+               <span class="cart-count bg-navy text-center text-white fw-bold rounded-circle">{{ store.cart.schedules.length }}</span>
             </i>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                <span class="navbar-toggler-icon"></span>
@@ -20,64 +20,50 @@
                   <a class="nav-link mx-2" href="/blog">Blog</a>
                </div>
                <div class="ms-0 navbar-left d-flex align-items-center">
-                  <i class="bx bx-cart fs-4 cart-desktop pointer" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-                     <span class="cart-count bg-navy text-center text-white fw-bold rounded-circle">{{ store.cart.length }}</span>
+                  <i class="bx bx-cart fs-4 cart-desktop pointer pe-3 border-end" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                     <span class="cart-count bg-navy text-center text-white fw-bold rounded-circle">{{ store.cart.schedules.length }}</span>
                   </i>
-                  <button class="border-0 bg-transparent btn-block mx-3 d-block d-md-inline-block" @click="store.setModal('login')">Masuk</button>
-                  <button class="btn bg-navy btn-block text-white d-block d-md-inline-block" @click="store.setModal('register')">Daftar</button>
+                  <div v-if="store.auth" @click="dropdown = !dropdown" class="px-3 d-flex align-items-center pointer" style="position: relative">
+                     <i class="bx bx-user-circle fs-3"></i>
+
+                     <div v-show="dropdown" class="profile-dropdown border bg-white p-2 rounded-3">
+                        <RouterLink to="/profile" class="d-block text-decoration-none border-bottom py-2 text-dark"><i class="bx bx-fw bxs-edit"></i> Profile</RouterLink>
+                        <RouterLink to="/dashboard" class="d-block text-decoration-none border-bottom py-2 text-dark"><i class="bx bx-fw bx-detail"></i> Dasbor</RouterLink>
+                        <RouterLink to="#" @click="logout" class="d-block text-decoration-none py-2 text-dark">Keluar</RouterLink>
+                     </div>
+                  </div>
+                  <div v-else>
+                     <button class="border-0 bg-transparent btn-block px-4 d-block d-md-inline-block" @click="store.setModal('login')">Masuk</button>
+                     <button class="btn bg-navy btn-block text-white d-block d-md-inline-block" @click="store.setModal('register')">Daftar</button>
+                  </div>
                </div>
             </div>
          </div>
       </div>
    </nav>
 
-   <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-      <div class="offcanvas-header">
-         <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Jadwal Booking</h5>
-         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-      </div>
-      <div class="offcanvas-body">
-         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-            <li class="nav-item">
-               <a class="nav-link active" aria-current="page" href="#">Home</a>
-            </li>
-            <li class="nav-item">
-               <a class="nav-link" href="#">Link</a>
-            </li>
-            <li class="nav-item dropdown">
-               <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> Dropdown </a>
-               <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">Action</a></li>
-                  <li><a class="dropdown-item" href="#">Another action</a></li>
-                  <li>
-                     <hr class="dropdown-divider" />
-                  </li>
-                  <li><a class="dropdown-item" href="#">Something else here</a></li>
-               </ul>
-            </li>
-         </ul>
-         <form class="d-flex mt-3" role="search">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-            <button class="btn btn-outline-success" type="submit">Search</button>
-         </form>
-      </div>
-   </div>
+   <Offcanvas />
 </template>
 
 <script>
 import { RouterLink } from "vue-router";
 import { store } from "../../../utils/store";
+import Offcanvas from "./Offcanvas.vue";
 
 export default {
+   components: { Offcanvas },
    data() {
       return {
          currentPage: "",
+         dropdown: false,
          store,
       };
    },
    methods: {
-      goToDashboard() {
-         this.$router.push("/dashboard");
+      logout() {
+         store.setAuth(false);
+         store.setUser();
+         this.$router.push("/");
       },
    },
    created() {
@@ -107,10 +93,10 @@ export default {
    display: inline-block !important;
 }
 
-.cart-count {
+.cart-desktop .cart-count {
    position: absolute;
    top: -2px;
-   right: -4px;
+   right: 12px;
 
    width: 15px;
    height: 15px;
@@ -120,6 +106,18 @@ export default {
 
 .btn-block {
    width: auto;
+}
+
+.profile-dropdown {
+   position: absolute;
+   top: 35px;
+   right: 0;
+
+   width: 200px;
+}
+
+.profile-dropdown a:hover {
+   background-color: rgba(0, 0, 128, 0.05);
 }
 
 @media screen and (max-width: 576px) {

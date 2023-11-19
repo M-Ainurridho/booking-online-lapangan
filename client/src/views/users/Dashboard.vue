@@ -18,12 +18,15 @@ export default {
          store,
       };
    },
+   created() {
+      store.setAuth(true);
+   },
    methods: {
       home() {
          this.$router.push("/");
       },
       logout() {
-         store.setAuth();
+         store.setAuth(false);
          store.setUser();
          this.$router.push("/");
       },

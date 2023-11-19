@@ -5,8 +5,8 @@ export const store = reactive({
    modal: false,
    user: {},
    auth: false,
-   setAuth() {
-      this.auth = !this.auth;
+   setAuth(bool) {
+      this.auth = bool;
    },
    setUser(data = {}) {
       this.user = data;
@@ -20,12 +20,28 @@ export const store = reactive({
          this.modal = true;
       }
    },
-   cart: [],
-   addCart(data) {
-      this.cart.push(data);
+   cart: {
+      venue: null,
+      schedules: [],
    },
-   deleteCart({ fieldName, start }) {
-      const filter = this.cart.filter((c) => c.fieldName != fieldName || c.start != start);
-      this.cart = filter;
+   addCart(venue, data) {
+      if (this.cart.venue === null) {
+         this.cart.venue = venue;
+      } else {
+         if (this.cart.venue != venue) {
+            this.cart.venue = venue;
+            this.cart.schedules = [];
+         }
+      }
+      this.cart.schedules.push(data);
+   },
+   deleteCart({ fieldName, date, start }) {
+      const filter = this.cart.schedules.filter((c) => c.fieldName != fieldName || c.date != date || c.start != start);
+
+      if (filter.length < 1) {
+         this.cart.venue = null;
+      }
+
+      this.cart.schedules = filter;
    },
 });
