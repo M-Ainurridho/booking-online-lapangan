@@ -32,6 +32,9 @@ import VenueCard from "./components/VenueCard.vue";
 import { setTitle } from "../../utils";
 import axios from "axios";
 
+import dotenv from "dotenv";
+dotenv.config();
+
 export default {
    name: "Venue",
    components: { GuestLayout, Banner, VenueCard },
@@ -46,7 +49,7 @@ export default {
 
       this.loading = !this.loading;
       try {
-         const response = await axios.get("https://api-booking-online-lapangan.vercel.app/venue");
+         const response = await axios.get(process.env.API_URL + "/venue");
          this.venues = response.data.payload;
       } catch (err) {
          console.log("Error : " + err);
