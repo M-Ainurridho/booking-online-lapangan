@@ -9,7 +9,7 @@ const app = express();
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // Server Port
 const port = process.env.SERVER_PORT || 5000;
@@ -19,6 +19,14 @@ const authRouter = require("./routes/auth-router");
 const userRouter = require("./routes/user-router");
 const venueRouter = require("./routes/venue-router");
 
+app.get("/", (req, res) => {
+   res.json({
+      payload: {
+         name: "Muhammad Ainurridho",
+         status: 200,
+      },
+   });
+});
 app.use("/auth", authRouter);
 app.use("/user", userRouter);
 app.use("/venue", venueRouter);
