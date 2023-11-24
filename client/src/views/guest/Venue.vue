@@ -46,7 +46,7 @@ export default {
 
       this.loading = !this.loading;
       try {
-         const response = await axios.get("http://localhost:3000/venue");
+         const response = await axios.get("https://api-booking-online-lapangan.vercel.app/venue");
          this.venues = response.data.payload;
       } catch (err) {
          console.log("Error : " + err);
