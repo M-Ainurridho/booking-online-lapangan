@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // Server Port
-const port = process.env.SERVER_PORT || 5000;
+const port = 3000 || 5000;
 
 // Routes
 const authRouter = require("./routes/auth-router");
