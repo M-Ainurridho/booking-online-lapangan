@@ -1,5 +1,5 @@
 <template>
-   <button ref="buttonCard" style="position: relative" class="card pointer" @click="newBooking">
+   <button ref="buttonCard" class="card pointer" @click="newBooking">
       <div class="card-body mx-auto">
          <div ref="playTime" class="card-title m-0 fw-semibold">{{ startHour }} - {{ endHour }}</div>
          <div ref="isBooked" class="card-text text-opacity-50" style="font-size: 14px"></div>
@@ -21,27 +21,20 @@ export default {
       };
    },
    created() {
-      for (let j = 0; j < store.cart.length; j++) {
-         console.log(this.start, this.end);
-         if (store.cart[j].fieldName == this.fieldName && store.cart[j].start == this.start) {
+      const date = dateString(this.start);
+      for (let j = 0; j < store.cart.schedules.length; j++) {
+         if (store.cart.schedules[j].fieldName == this.fieldName && store.cart.schedules[j].start == timeString(this.start) && store.cart.schedules[j].date == `${date[0]}, ${date[2]} ${date[1]} ${date[3]}`) {
             return (this.addBooking = !this.addBooking);
          }
       }
    },
-   watch: {
-      addBooking(newVal) {
-         if (newVal) {
-            this.$refs.buttonCard.classList.add("activeCard", "bg-navy-10");
-            this.$refs.playTime.classList.add("text-navy");
-            this.$refs.isBooked.classList.add("text-navy");
-         } else {
-            this.$refs.buttonCard.classList.remove("activeCard", "bg-navy-10");
-            this.$refs.playTime.classList.remove("text-navy");
-            this.$refs.isBooked.classList.remove("text-navy");
-         }
-      },
-   },
    mounted() {
+      if (this.addBooking) {
+         this.$refs.buttonCard.classList.add("activeCard", "bg-navy-10");
+         this.$refs.playTime.classList.add("text-navy");
+         this.$refs.isBooked.classList.add("text-navy");
+      }
+
       if (this.booked.length < 1) return (this.$refs.isBooked.textContent = toRupiah(this.venuePrice));
 
       for (let i = 0; i < this.booked.length; i++) {
@@ -65,13 +58,18 @@ export default {
       async newBooking() {
          const date = dateString(this.start);
          if (this.addBooking) {
+            this.$refs.buttonCard.classList.remove("activeCard", "bg-navy-10");
+            this.$refs.playTime.classList.remove("text-navy");
+            this.$refs.isBooked.classList.remove("text-navy");
             store.deleteCart({
                fieldName: this.fieldName,
                date: `${date[0]}, ${date[2]} ${date[1]} ${date[3]}`,
                start: timeString(this.start),
             });
-            this.addBooking = !this.addBooking;
          } else {
+            this.$refs.buttonCard.classList.add("activeCard", "bg-navy-10");
+            this.$refs.playTime.classList.add("text-navy");
+            this.$refs.isBooked.classList.add("text-navy");
             store.addCart(this.venueName, {
                fieldName: this.fieldName,
                date: `${date[0]}, ${date[2]} ${date[1]} ${date[3]}`,
@@ -79,8 +77,8 @@ export default {
                end: timeString(this.end),
                price: toRupiah(this.venuePrice),
             });
-            this.addBooking = !this.addBooking;
          }
+         this.addBooking = !this.addBooking;
       },
    },
 };

@@ -4,11 +4,12 @@ const cors = require("cors");
 require("dotenv").config();
 require("./config/db");
 
-// Middleware
 const app = express();
+
+// Middleware
 app.use(cors());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Server Port
 const port = process.env.SERVER_PORT || 5000;
