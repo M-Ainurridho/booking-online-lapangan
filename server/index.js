@@ -19,14 +19,6 @@ const authRouter = require("./routes/auth-router");
 const userRouter = require("./routes/user-router");
 const venueRouter = require("./routes/venue-router");
 
-app.get("/", (req, res) => {
-   res.json({
-      payload: {
-         name: "Muhammad Ainurridho",
-         status: 200,
-      },
-   });
-});
 app.use("/auth", authRouter);
 app.use("/user", userRouter);
 app.use("/venue", venueRouter);
