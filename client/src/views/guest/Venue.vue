@@ -30,10 +30,10 @@ import GuestLayout from "../../layouts/GuestLayout.vue";
 import Banner from "./components/Banner.vue";
 import VenueCard from "./components/VenueCard.vue";
 import { setTitle } from "../../utils";
+import { apiUrl } from "../../config/const";
 import axios from "axios";
 
-import dotenv from "dotenv";
-dotenv.config();
+
 
 export default {
    name: "Venue",
@@ -49,7 +49,7 @@ export default {
 
       this.loading = !this.loading;
       try {
-         const response = await axios.get(process.env.API_URL + "/venue");
+         const response = await axios.get(apiUrl("venue"));
          this.venues = response.data.payload;
       } catch (err) {
          console.log("Error : " + err);
