@@ -34,7 +34,7 @@ export default {
          return toRupiah(this.venuePrice);
       },
       reqImage(img) {
-         return baseUrl(`/src/assets/images/venue/${img}`);
+         return baseUrl(`src/assets/images/venue/${img}`);
       },
    },
 };
