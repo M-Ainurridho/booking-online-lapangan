@@ -121,6 +121,7 @@ import DetailLapangan from "./components/DetailLapangan.vue";
 import { RouterLink } from "vue-router";
 import { dates, setTimes } from "../../utils/date";
 import { toRupiah } from "../../utils";
+import { apiUrl } from "../../config/const";
 import axios from "axios";
 
 export default {
@@ -144,14 +145,14 @@ export default {
       try {
          const { _id } = this.$route.params;
 
-         const venue = await axios.get(`http://localhost:3000/venue/${_id}`);
+         const venue = await axios.get(apiUrl(_id));
          this.venue = venue.data.payload;
       } catch (err) {
          this.notFound = !this.notFound;
       }
 
       try {
-         const booking = await axios.get(`http://localhost:3000/user/booking/${this.jadwal[0][2]} ${this.jadwal[0][1]}, ${this.jadwal[0][3]}`);
+         const booking = await axios.get(apiUrl(`user/booking/${this.jadwal[0][2]} ${this.jadwal[0][1]}, ${this.jadwal[0][3]}`));
          this.booked = booking.data.payload;
       } catch (err) {
          this.booked = err.response.data.errors;
@@ -181,7 +182,7 @@ export default {
 
          try {
             const day = `${date[2]} ${date[1]}, ${date[3]}`;
-            const booking = await axios.get(`http://localhost:3000/user/booking/${day}`);
+            const booking = await axios.get(apiUrl(`user/booking/${day}`));
             this.booked = booking.data.payload;
          } catch (err) {
             this.booked = err.response.data.errors;
