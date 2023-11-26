@@ -1,7 +1,7 @@
 <template>
    <div class="col-12 col-md-6 col-lg-4">
       <div class="card rounded-4 overflow-hidden" @click="navigate">
-         <img :src="reqImage(venueImage)" class="card-img venue-img" :alt="venueName" />
+         <img :src="`/src/assets/images/venue/${venueImage}`" class="card-img venue-img" :alt="venueName" />
          <div class="card-body">
             <p class="card-subtitle fw-bold mb-1">Venue</p>
             <h5 class="venue-name">{{ venueName }}</h5>

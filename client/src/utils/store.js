@@ -5,11 +5,20 @@ export const store = reactive({
    modal: false,
    user: {},
    auth: false,
+   userMenu: {
+      menu: ["Booking", "Main Bareng"],
+   },
    setAuth(bool) {
       this.auth = bool;
    },
    setUser(data = {}) {
       this.user = data;
+   },
+   setUserMenu(name) {
+      if (name == "Booking") {
+         this.userMenu.currentMenu = name;
+         this.userMenu.status = ["Semua Status", "Menunggu Pembayaran", "Berhasil", "Dibatalkan", "Selesai"];
+      }
    },
    setModal(name = "") {
       if (name === "") {

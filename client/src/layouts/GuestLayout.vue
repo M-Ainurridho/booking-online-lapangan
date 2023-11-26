@@ -22,7 +22,7 @@
 
 <script>
 import { RouterLink } from "vue-router";
-import Navbar from "../views/guest/components/Navbar.vue";
+import Navbar from "../components/Navbar.vue";
 import Modal from "../components/Modal.vue";
 
 export default {

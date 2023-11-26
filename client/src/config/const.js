@@ -1,5 +1,5 @@
 export const apiUrl = (endpoint) => {
-   return `https://api-booking-online-lapangan.vercel.app/${endpoint}`;
+   return `http://localhost:3000/${endpoint}`;
 };
 
 export const baseUrl = (endpoint) => {

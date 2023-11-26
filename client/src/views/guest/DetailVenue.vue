@@ -145,7 +145,7 @@ export default {
       try {
          const { _id } = this.$route.params;
 
-         const venue = await axios.get(apiUrl(_id));
+         const venue = await axios.get(apiUrl(`venue/${_id}`));
          this.venue = venue.data.payload;
       } catch (err) {
          this.notFound = !this.notFound;

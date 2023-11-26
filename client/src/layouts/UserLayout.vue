@@ -1,8 +1,8 @@
 <template>
    <Layout>
-      <!-- <template #header>
+      <template #header>
          <Navbar />
-      </template> -->
+      </template>
 
       <template #main>
          <main>
@@ -13,12 +13,11 @@
 </template>
 
 <script>
+import Navbar from "../components/Navbar.vue";
 import { store } from "../utils/store";
 
-// import { RouterLink } from "vue-router";
-// import Navbar from "../views/auth/components/Navbar.vue";
-
 export default {
+   components: { Navbar },
    data() {
       return {
          store,

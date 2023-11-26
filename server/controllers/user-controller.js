@@ -20,6 +20,7 @@ const getUserById = async (req, res) => {
 
    try {
       const user = await User.findOne({ _id });
+      console.log(user);
       response(200, "Get User By Id", res, user);
    } catch (err) {
       console.log(err);

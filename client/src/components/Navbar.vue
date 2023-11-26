@@ -42,16 +42,16 @@
       </div>
    </nav>
 
-   <Offcanvas />
+   <Cart />
 </template>
 
 <script>
 import { RouterLink } from "vue-router";
-import { store } from "../../../utils/store";
-import Offcanvas from "./Offcanvas.vue";
+import { store } from "../utils/store";
+import Cart from "./Cart.vue";
 
 export default {
-   components: { Offcanvas },
+   components: { Cart },
    data() {
       return {
          currentPage: "",
