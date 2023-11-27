@@ -3,23 +3,6 @@ import { reactive } from "vue";
 export const store = reactive({
    modalName: "",
    modal: false,
-   user: {},
-   auth: false,
-   userMenu: {
-      menu: ["Booking", "Main Bareng"],
-   },
-   setAuth(bool) {
-      this.auth = bool;
-   },
-   setUser(data = {}) {
-      this.user = data;
-   },
-   setUserMenu(name) {
-      if (name == "Booking") {
-         this.userMenu.currentMenu = name;
-         this.userMenu.status = ["Semua Status", "Menunggu Pembayaran", "Berhasil", "Dibatalkan", "Selesai"];
-      }
-   },
    setModal(name = "") {
       if (name === "") {
          this.modalName = name;
@@ -27,6 +10,23 @@ export const store = reactive({
       } else {
          this.modalName = name;
          this.modal = true;
+      }
+   },
+   user: {},
+   auth: false,
+   setUser(data = {}) {
+      this.user = data;
+   },
+   setAuth(bool) {
+      this.auth = bool;
+   },
+   userMenu: {
+      menu: ["Booking", "Main Bareng"],
+   },
+   setUserMenu(name) {
+      if (name == "Booking") {
+         this.userMenu.currentMenu = name;
+         this.userMenu.status = ["Semua Status", "Menunggu Pembayaran", "Berhasil", "Dibatalkan", "Selesai"];
       }
    },
    cart: {
@@ -52,5 +52,15 @@ export const store = reactive({
       }
 
       this.cart.schedules = filter;
+   },
+   alert: {
+      statusCode: 0,
+      status: false,
+      message: "",
+   },
+   setAlert(code = 0, message = "") {
+      this.alert.status = !this.alert.status;
+      this.alert.statusCode = code;
+      this.alert.message = message;
    },
 });

@@ -7,6 +7,6 @@ router.get("/booking/:day", user.getUserBookingVenue);
 router.get("/:_id", user.getUserById);
 
 router.patch("/booking/:_id", user.bookingField);
-router.patch("/:_id", updateProfileValidation, user.updateProfile);
+router.patch("/:_id", updateProfileValidation, user.updateProfile, user.getUserById);
 
 module.exports = router;

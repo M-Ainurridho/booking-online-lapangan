@@ -67,16 +67,22 @@ const bookingField = async (req, res) => {
    }
 };
 
-const updateProfile = async (req, res) => {
+const updateProfile = async (req, res, next) => {
    const { fullname, username, email, noHp } = req.body;
    const { _id } = req.params;
-   console.log({ fullname, username, email, noHp });
 
    try {
-      if (noHp) {
-      } else {
-         const update = await User.findOneAndUpdate({ _id }, { $set: { fullname, username, email } });
-      }
+      !noHp
+         ? await User.findOneAndUpdate(
+              { _id },
+              {
+                 $set: { fullname, username, email },
+                 $unset: { noHp },
+              }
+           )
+         : await User.findOneAndUpdate({ _id }, { $set: { fullname, username, email, noHp } });
+
+      next();
    } catch (err) {
       console.log("error : " + err);
    }

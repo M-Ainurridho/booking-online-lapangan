@@ -1,6 +1,7 @@
 const { body, validationResult } = require("express-validator");
 const User = require("../models/user-model");
 const response = require("../response");
+const validator = require("validator");
 
 module.exports.emailValidation = [
    body("email")
@@ -53,7 +54,16 @@ module.exports.basicProfileValidation = [
 module.exports.updateProfileValidation = [
    body("fullname").trim().notEmpty().withMessage("Required input fullname"),
    body("username").trim().notEmpty().withMessage("Required input username"),
-   body("noHp").trim(),
+   body("noHp")
+      .trim()
+      .custom((value) => {
+         if (value) {
+            if (!validator.isMobilePhone(value, ["id-ID"])) {
+               throw new Error("Invalid nomor telepon");
+            }
+         }
+         return true;
+      }),
    body("email").trim().notEmpty().withMessage("Required input email").isEmail().withMessage("Invalid input email"),
    (req, res, next) => {
       const error = validationResult(req);
