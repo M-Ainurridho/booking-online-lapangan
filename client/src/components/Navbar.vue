@@ -61,9 +61,9 @@ export default {
    },
    methods: {
       logout() {
-         store.setAlert(200, "Logged out");
          store.setAuth(false);
          store.setUser();
+         store.setAlert(true, 200, "Logged out");
          this.$router.push("/");
       },
    },

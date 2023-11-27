@@ -11,9 +11,7 @@
                   <p class="m-0 fs-6 pointer" :class="activeComp == 'change-password' ? 'fw-bold' : ''" @click="activeComp = 'change-password'">Ubah kata Sandi</p>
                </div>
                <div class="col-9">
-                  <KeepAlive>
-                     <component :is="activeComp"></component>
-                  </KeepAlive>
+                  <component :is="activeComp"></component>
                </div>
             </div>
          </div>

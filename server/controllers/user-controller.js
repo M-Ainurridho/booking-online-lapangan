@@ -1,6 +1,9 @@
 const { default: mongoose } = require("mongoose");
-const User = require("../models/user-model");
+const { hashPassword } = require("../utils/hash");
+
 const response = require("../response");
+
+const User = require("../models/user-model");
 
 const getAllUsers = async (req, res) => {
    try {
@@ -88,4 +91,23 @@ const updateProfile = async (req, res, next) => {
    }
 };
 
-module.exports = { getAllUsers, getUserById, getUserBookingVenue, bookingField, updateProfile };
+const changePassword = async (req, res) => {
+   const { newPassword } = req.body;
+   const { _id } = req.params;
+
+   try {
+      const change = await User.findOneAndUpdate({ _id }, { $set: { password: hashPassword(newPassword) } });
+      return response(200, "Successfuly! Changed Password", res, change);
+   } catch (err) {
+      console.log("error : " + err);
+   }
+};
+
+module.exports = {
+   getAllUsers,
+   getUserById,
+   getUserBookingVenue,
+   bookingField,
+   updateProfile,
+   changePassword,
+};

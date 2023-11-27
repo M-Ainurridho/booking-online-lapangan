@@ -76,7 +76,7 @@ export default {
                email: this.inputEmail,
             });
             store.setUser(response.data.payload);
-            store.setAlert(response.status, "Sucessfully! Updated Data");
+            store.setAlert(response.data.status, 200, "Sucessfully! Updated Data");
          } catch (err) {
             this.errors.status = true;
             this.errors.data = err.response.data.errors;

@@ -58,8 +58,8 @@ export const store = reactive({
       status: false,
       message: "",
    },
-   setAlert(code = 0, message = "") {
-      this.alert.status = !this.alert.status;
+   setAlert(status, code = 0, message = "") {
+      this.alert.status = status;
       this.alert.statusCode = code;
       this.alert.message = message;
    },
