@@ -25,7 +25,6 @@ export default {
    },
    created() {
       store.auth === false && this.$router.push("/");
-      store.setModal();
    },
 };
 </script>

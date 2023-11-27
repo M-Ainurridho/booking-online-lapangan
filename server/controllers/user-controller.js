@@ -20,7 +20,6 @@ const getUserById = async (req, res) => {
 
    try {
       const user = await User.findOne({ _id });
-      console.log(user);
       response(200, "Get User By Id", res, user);
    } catch (err) {
       console.log(err);
@@ -68,4 +67,19 @@ const bookingField = async (req, res) => {
    }
 };
 
-module.exports = { getAllUsers, getUserById, getUserBookingVenue, bookingField };
+const updateProfile = async (req, res) => {
+   const { fullname, username, email, noHp } = req.body;
+   const { _id } = req.params;
+   console.log({ fullname, username, email, noHp });
+
+   try {
+      if (noHp) {
+      } else {
+         const update = await User.findOneAndUpdate({ _id }, { $set: { fullname, username, email } });
+      }
+   } catch (err) {
+      console.log("error : " + err);
+   }
+};
+
+module.exports = { getAllUsers, getUserById, getUserBookingVenue, bookingField, updateProfile };

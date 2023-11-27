@@ -27,7 +27,7 @@
                      <i class="bx bx-user-circle fs-3"></i>
 
                      <div v-show="dropdown" class="profile-dropdown border bg-white p-2 rounded-3">
-                        <RouterLink to="/profile" class="d-block text-decoration-none border-bottom py-2 text-dark"><i class="bx bx-fw bxs-edit"></i> Profile</RouterLink>
+                        <RouterLink to="/user/profile" class="d-block text-decoration-none border-bottom py-2 text-dark"><i class="bx bx-fw bxs-edit"></i> Profil</RouterLink>
                         <RouterLink to="/dashboard" class="d-block text-decoration-none border-bottom py-2 text-dark"><i class="bx bx-fw bx-detail"></i> Dasbor</RouterLink>
                         <RouterLink to="#" @click="logout" class="d-block text-decoration-none py-2 text-dark">Keluar</RouterLink>
                      </div>

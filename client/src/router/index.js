@@ -8,6 +8,8 @@ import EmailVerification from "../views/auth/EmailVerification.vue";
 import BasicProfile from "../views/auth/BasicProfile.vue";
 
 import Dashboard from "../views/users/Dashboard.vue";
+import UserProfile from "../views/users/UserProfile.vue";
+
 import NotFound from "../views/errors/NotFound.vue";
 
 const router = createRouter({
@@ -42,6 +44,11 @@ const router = createRouter({
          path: "/dashboard",
          name: "Dashboard",
          component: Dashboard,
+      },
+      {
+         path: "/user/profile",
+         name: "User Profile",
+         component: UserProfile,
       },
       {
          path: "/:pathMatch(.*)*",

@@ -49,3 +49,17 @@ module.exports.basicProfileValidation = [
       next();
    },
 ];
+
+module.exports.updateProfileValidation = [
+   body("fullname").trim().notEmpty().withMessage("Required input fullname"),
+   body("username").trim().notEmpty().withMessage("Required input username"),
+   body("noHp").trim(),
+   body("email").trim().notEmpty().withMessage("Required input email").isEmail().withMessage("Invalid input email"),
+   (req, res, next) => {
+      const error = validationResult(req);
+
+      if (!error.isEmpty()) return response(402, "Error input", res, error.array());
+
+      next();
+   },
+];

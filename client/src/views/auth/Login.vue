@@ -53,7 +53,8 @@ export default {
             const response = await axios.post("http://localhost:3000/auth/login", { email: this.inputEmail, password: this.inputPassword });
 
             store.setUser(response.data.payload);
-            this.$router.push("/dashboard");
+            store.setAuth(true);
+            store.setModal();
          } catch (err) {
             this.errors.status = true;
             this.errors.data = err.response.data.errors;

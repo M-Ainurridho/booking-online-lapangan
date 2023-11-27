@@ -40,7 +40,6 @@ export default {
       };
    },
    created() {
-      store.setAuth(true);
       this.currentMenu = "Booking";
       this.currentStatus = "Semua Status";
       store.setUserMenu("Booking");
