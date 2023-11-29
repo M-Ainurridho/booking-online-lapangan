@@ -29,29 +29,9 @@ export const store = reactive({
          this.userMenu.status = ["Semua Status", "Menunggu Pembayaran", "Berhasil", "Dibatalkan", "Selesai"];
       }
    },
-   cart: {
-      venue: null,
-      schedules: [],
-   },
-   addCart(venue, data) {
-      if (this.cart.venue === null) {
-         this.cart.venue = venue;
-      } else {
-         if (this.cart.venue != venue) {
-            this.cart.venue = venue;
-            this.cart.schedules = [];
-         }
-      }
-      this.cart.schedules.push(data);
-   },
-   deleteCart({ fieldName, date, start }) {
-      const filter = this.cart.schedules.filter((c) => c.fieldName != fieldName || c.date != date || c.start != start);
-
-      if (filter.length < 1) {
-         this.cart.venue = null;
-      }
-
-      this.cart.schedules = filter;
+   carts: [],
+   setCarts(data = []) {
+      this.carts = data;
    },
    alert: {
       statusCode: 0,

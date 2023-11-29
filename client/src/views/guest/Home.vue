@@ -17,6 +17,7 @@
 
 <script>
 import GuestLayout from "../../layouts/GuestLayout.vue";
+
 import { setTitle } from "../../utils";
 
 export default {

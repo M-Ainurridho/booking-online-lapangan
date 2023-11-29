@@ -5,7 +5,7 @@
             <img src="../../../assets/images/venue/badminton.jpg" alt="gambar" class="w-100 object-fit-cover rounded-3" />
          </div>
          <div class="col-8 border-start">
-            <h5>{{ fieldName }}</h5>
+            <h5>{{ field.name }}</h5>
             <div class="spek-lapangan">
                <p class="m-0 fs-6"><i class="bx bx-basketball me-1"></i> Basketball</p>
                <p class="m-0 fs-6"><i class="bx bx-map-pin me-1"></i> Indoor</p>
@@ -15,7 +15,7 @@
                {{ bookingTime.length - booked.length }} Lapangan Tersedia <i class="bx fs-4" :class="dropdown ? 'bx-down-arrow-circle' : 'bx-up-arrow-circle'"></i>
             </button>
             <div v-if="dropdown" class="waktu-booking mt-4 pt-3 border-top">
-               <BookingTime v-for="(time, i) in bookingTime" :key="i" :field-name="fieldName" :field-id="fieldId" :booking-id="i" :start="time.start" :end="time.end" :venue-price="venue.price" :venue-name="venue.name" :booked="booked" />
+               <BookingTime v-for="(time, i) in bookingTime" :key="i" :field="field" :time="time" :venue="venue" :booked="booked" />
             </div>
          </div>
       </div>
@@ -27,7 +27,7 @@ import BookingTime from "./BookingTime.vue";
 
 export default {
    components: { BookingTime },
-   props: ["fieldId", "fieldName", "bookingTime", "bookedTime", "venue", "closeDropdown"],
+   props: ["field", "bookingTime", "bookedTime", "venue", "closeDropdown"],
    data() {
       return {
          dropdown: false,

@@ -9,22 +9,26 @@
 </template>
 
 <script>
+import { apiUrl } from "../../../config/const";
 import { toRupiah, timeString, dateString } from "../../../utils";
 import { store } from "../../../utils/store";
 
+import axios from "axios";
+
 export default {
-   props: ["fieldName", "fieldId", "bookingId", "start", "end", "venuePrice", "venueName", "booked"],
+   props: ["field", "time", "venue", "booked"],
    data() {
       return {
          addBooking: false,
          store,
       };
    },
-   created() {
-      const date = dateString(this.start);
-      for (let j = 0; j < store.cart.schedules.length; j++) {
-         if (store.cart.schedules[j].fieldName == this.fieldName && store.cart.schedules[j].start == timeString(this.start) && store.cart.schedules[j].date == `${date[0]}, ${date[2]} ${date[1]} ${date[3]}`) {
-            return (this.addBooking = !this.addBooking);
+   async created() {
+      const date = dateString(this.time.start);
+
+      for (let j = 0; j < store.carts.length; j++) {
+         if (store.carts[j].field == this.field.name && store.carts[j].start == this.time.start && store.carts[j].date == `${date[0]}, ${date[2]} ${date[1]} ${date[3]}`) {
+            return (this.addBooking = true);
          }
       }
    },
@@ -35,7 +39,7 @@ export default {
          this.$refs.isBooked.classList.add("text-navy");
       }
 
-      if (this.booked.length < 1) return (this.$refs.isBooked.textContent = toRupiah(this.venuePrice));
+      if (this.booked.length < 1) return (this.$refs.isBooked.textContent = toRupiah(this.venue.price));
 
       for (let i = 0; i < this.booked.length; i++) {
          if (this.booked[i].playTime.start === this.start) {
@@ -47,38 +51,42 @@ export default {
    },
    computed: {
       startHour() {
-         return timeString(this.start);
+         return timeString(this.time.start);
       },
 
       endHour() {
-         return timeString(this.end);
+         return timeString(this.time.end);
       },
    },
    methods: {
       async newBooking() {
-         const date = dateString(this.start);
-         if (this.addBooking) {
-            this.$refs.buttonCard.classList.remove("activeCard", "bg-navy-10");
-            this.$refs.playTime.classList.remove("text-navy");
-            this.$refs.isBooked.classList.remove("text-navy");
-            store.deleteCart({
-               fieldName: this.fieldName,
-               date: `${date[0]}, ${date[2]} ${date[1]} ${date[3]}`,
-               start: timeString(this.start),
-            });
-         } else {
-            this.$refs.buttonCard.classList.add("activeCard", "bg-navy-10");
-            this.$refs.playTime.classList.add("text-navy");
-            this.$refs.isBooked.classList.add("text-navy");
-            store.addCart(this.venueName, {
-               fieldName: this.fieldName,
-               date: `${date[0]}, ${date[2]} ${date[1]} ${date[3]}`,
-               start: timeString(this.start),
-               end: timeString(this.end),
-               price: toRupiah(this.venuePrice),
-            });
+         if (!store.auth) return store.setAlert(true, 402, "Kamu belum login!");
+
+         const date = dateString(this.time.start);
+
+         if (this.addBooking) return;
+
+         this.$refs.buttonCard.classList.add("activeCard", "bg-navy-10");
+         this.$refs.playTime.classList.add("text-navy");
+         this.$refs.isBooked.classList.add("text-navy");
+
+         const data = {
+            venue: this.venue.name,
+            price: this.venue.price,
+            field: this.field.name,
+            date: `${date[0]}, ${date[2]} ${date[1]} ${date[3]}`,
+            start: this.time.start,
+            end: this.time.end,
+         };
+
+         try {
+            const addCart = await axios.patch(apiUrl(`user/cart/${store.user._id}`), data);
+            store.setCarts(addCart.data.payload);
+         } catch (err) {
+            console.log("error : " + err);
+         } finally {
+            this.addBooking = !this.addBooking;
          }
-         this.addBooking = !this.addBooking;
       },
    },
 };

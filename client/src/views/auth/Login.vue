@@ -22,7 +22,10 @@
          </div>
       </div>
       <div class="mb-3">
-         <button type="submit" class="border-0 w-100 py-2 rounded-2 text-white" :class="loading ? 'bg-secondary' : 'bg-navy'" :disabled="loading && 'disabled'">{{ loading ? "Loading..." : "Selanjutnya" }}</button>
+         <button type="submit" v-if="loading" class="border w-100 bg-body-secondary py-2 rounded-2 text-white" disabled>
+            <Loading size="20px" color="border-secondary" thick="3px" />
+         </button>
+         <button type="submit" v-else class="border-0 w-100 bg-navy py-2 rounded-2 text-white">Selanjutnya</button>
       </div>
    </form>
 </template>
@@ -32,7 +35,10 @@ import { RouterLink } from "vue-router";
 import { store } from "../../utils/store";
 import axios from "axios";
 
+import Loading from "../../components/Loading.vue";
+
 export default {
+   components: { Loading },
    data() {
       return {
          inputEmail: "",
@@ -47,19 +53,20 @@ export default {
    },
    methods: {
       async onSubmit() {
-         this.loading = true;
+         this.loading = !this.loading;
 
          try {
             const response = await axios.post("http://localhost:3000/auth/login", { email: this.inputEmail, password: this.inputPassword });
 
             store.setUser(response.data.payload);
+            store.setCarts(response.data.payload.carts);
             store.setAuth(true);
             store.setModal();
+            this.loading = !this.loading;
          } catch (err) {
             this.errors.status = true;
             this.errors.data = err.response.data.errors;
-         } finally {
-            this.loading = false;
+            this.loading = !this.loading;
          }
       },
    },

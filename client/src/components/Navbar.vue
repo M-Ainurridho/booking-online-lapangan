@@ -7,7 +7,7 @@
          </RouterLink>
          <div class="d-flex align-items-center">
             <i class="bx bx-cart fs-4 me-3 cart-mobile" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-               <span class="cart-count bg-navy text-center text-white fw-bold rounded-circle">{{ store.cart.schedules.length }}</span>
+               <span class="cart-count bg-navy text-center text-white fw-bold rounded-circle">{{ store.carts.length }}</span>
             </i>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                <span class="navbar-toggler-icon"></span>
@@ -21,7 +21,7 @@
                </div>
                <div class="ms-0 navbar-left d-flex align-items-center">
                   <i class="bx bx-cart fs-4 cart-desktop pointer pe-3 border-end" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-                     <span class="cart-count bg-navy text-center text-white fw-bold rounded-circle">{{ store.cart.schedules.length }}</span>
+                     <span class="cart-count bg-navy text-center text-white fw-bold rounded-circle">{{ store.carts.length }}</span>
                   </i>
                   <div v-if="store.auth" @click="dropdown = !dropdown" class="px-3 d-flex align-items-center pointer" style="position: relative">
                      <i class="bx bx-user-circle fs-3"></i>
@@ -63,6 +63,7 @@ export default {
       logout() {
          store.setAuth(false);
          store.setUser();
+         store.setCarts();
          store.setAlert(true, 200, "Logged out");
          this.$router.push("/");
       },

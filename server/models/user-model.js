@@ -9,6 +9,11 @@ const userSchema = new Schema({
       type: String,
       default: "nophoto.jpg",
    },
+   noHp: String,
+   isActive: {
+      type: Boolean,
+      default: false,
+   },
    booking: [
       {
          _id: mongoose.Schema.Types.ObjectId,
@@ -20,11 +25,17 @@ const userSchema = new Schema({
          },
       },
    ],
-   noHp: String,
-   isActive: {
-      type: Boolean,
-      default: false,
-   },
+   carts: [
+      {
+         _id: mongoose.Schema.Types.ObjectId,
+         venue: String,
+         price: Number,
+         field: String,
+         date: String,
+         start: Number,
+         end: Number,
+      },
+   ],
 });
 
 const User = mongoose.model("User", userSchema);

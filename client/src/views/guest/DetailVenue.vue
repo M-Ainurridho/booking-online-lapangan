@@ -104,7 +104,7 @@
                   </div>
 
                   <div class="row">
-                     <DetailLapangan v-for="{ _id, name } in venue.fields" :key="_id" :field-id="_id" :field-name="name" :bookingTime="bookingTime" :bookedTime="booked" :venue="venue" :closeDropdown="closeDropdown" />
+                     <DetailLapangan v-for="(field, index) in venue.fields" :key="index" :field="field" :bookingTime="bookingTime" :bookedTime="booked" :venue="venue" :closeDropdown="closeDropdown" />
                   </div>
                </div>
             </div>

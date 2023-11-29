@@ -19,6 +19,18 @@
                   </div>
                </div>
             </div>
+
+            <div class="row">
+               <div class="col-12 d-flex flex-column justify-content-center align-items-center">
+                  <img src="../../assets/images/icons/document.png" alt="" class="h-25" />
+                  <div class="row mt-3">
+                     <div class="col-12 text-center">
+                        <h5 class="card-title">Belum ada booking</h5>
+                        <p class="text-text fs-sm">Lapangan yang kamu booking bakal muncul disini, ya.</p>
+                     </div>
+                  </div>
+               </div>
+            </div>
          </div>
       </div>
    </UserLayout>

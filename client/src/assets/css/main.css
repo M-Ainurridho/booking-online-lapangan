@@ -72,3 +72,7 @@ small,
 .right-0 {
    right: 0;
 }
+
+.border-navy {
+   border-color: navy;
+}
