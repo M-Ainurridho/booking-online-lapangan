@@ -29,8 +29,8 @@ export const store = reactive({
          this.userMenu.status = ["Semua Status", "Menunggu Pembayaran", "Berhasil", "Dibatalkan", "Selesai"];
       }
    },
-   carts: [],
-   setCarts(data = []) {
+   carts: {},
+   setCarts(data = {}) {
       this.carts = data;
    },
    alert: {

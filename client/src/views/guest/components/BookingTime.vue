@@ -25,9 +25,10 @@ export default {
    },
    async created() {
       const date = dateString(this.time.start);
+      const { added } = store.carts.fields.find(({ name }) => name == this.field.name);
 
-      for (let j = 0; j < store.carts.length; j++) {
-         if (store.carts[j].field == this.field.name && store.carts[j].start == this.time.start && store.carts[j].date == `${date[0]}, ${date[2]} ${date[1]} ${date[3]}`) {
+      for (let i = 0; i < added.length; i++) {
+         if (added[i].start == this.time.start) {
             return (this.addBooking = true);
          }
       }
@@ -72,11 +73,11 @@ export default {
 
          const data = {
             venue: this.venue.name,
-            price: this.venue.price,
             field: this.field.name,
             date: `${date[0]}, ${date[2]} ${date[1]} ${date[3]}`,
             start: this.time.start,
             end: this.time.end,
+            price: this.venue.price,
          };
 
          try {

@@ -5,19 +5,19 @@
          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" @click="closeOffcanvas"></button>
       </div>
       <div class="offcanvas-body" style="display: grid">
-         <div v-if="store.carts.length < 1">
+         <div v-if="!store.carts?.fields">
             <p class="text-opacity-50 text-center fs-6">Belum ada jadwal di keranjang</p>
          </div>
 
          <div v-else>
-            <div class="row" v-for="cart in store.carts" :key="cart._id">
-               <h6 class="fw-semibold" style="margin-left: -10px !important">{{ cart.field }}</h6>
-               <div class="col-12 cart-schedule bg-body-tertiary rounded-2 py-2 mb-3 overflow-hidden">
+            <div class="row mb-2" v-for="cart in store.carts.fields" :key="cart._id">
+               <h6 class="fw-semibold" style="margin-left: -10px !important">{{ cart.name }}</h6>
+               <div class="col-12 cart-schedule bg-body-tertiary rounded-2 py-2 mb-2 overflow-hidden" v-for="info in cart.added">
                   <div class="row">
                      <div class="col-10">
-                        <div class="fw-medium">{{ cart.date }} <i class="bx bxs-circle d-inline-block" style="font-size: 5px !important; transform: translateY(-3px)"></i> {{ startHour(cart.start) }} - {{ endHour(cart.end) }}</div>
+                        <div class="fw-medium">{{ info.date }} <i class="bx bxs-circle d-inline-block" style="font-size: 5px !important; transform: translateY(-3px)"></i> {{ startHour(info.start) }} - {{ endHour(info.end) }}</div>
                         <div class="">
-                           {{ printPrice(cart.price) }}
+                           {{ printPrice(info.price) }}
                         </div>
                      </div>
                      <div class="col-2 my-auto"><i class="bx bx-trash-alt fs-4 pointer" @click="deleteCart(cart._id)"></i></div>

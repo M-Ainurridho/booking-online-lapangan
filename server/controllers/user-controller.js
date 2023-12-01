@@ -117,26 +117,73 @@ const getCartByUserId = async (req, res) => {
 };
 
 const addCartByUserId = async (req, res, next) => {
-   const { venue, price, field, date, start, end } = req.body;
+   const { venue, field, date, start, end, price } = req.body;
    const { _id } = req.params;
 
    try {
-      await User.findOneAndUpdate(
-         { _id },
-         {
-            $push: {
-               carts: {
-                  _id: new mongoose.Types.ObjectId(),
-                  venue,
-                  price,
-                  field,
-                  date,
-                  start,
-                  end,
+      const user = await User.findOne({ _id });
+
+      if (user.carts.length < 1 || user.carts.venue != venue) {
+         await User.findOneAndUpdate(
+            { _id },
+            {
+               $set: {
+                  carts: {
+                     _id: new mongoose.Types.ObjectId(),
+                     venue,
+                     fields: {
+                        name: field,
+                        added: {
+                           date,
+                           start,
+                           end,
+                           price,
+                        },
+                     },
+                  },
                },
-            },
+            }
+         );
+      } else {
+         const fields = user.carts.fields;
+
+         const found = fields.find(({ name }) => name == field);
+
+         if (found) {
+            await User.findOneAndUpdate(
+               { "carts.fields._id": found._id },
+               {
+                  $addToSet: {
+                     "carts.fields.$[pl].added": { date, start, end, price },
+                  },
+               },
+               {
+                  arrayFilters: [
+                     {
+                        "pl.name": found.name,
+                     },
+                  ],
+               }
+            );
+         } else {
+            await User.findOneAndUpdate(
+               { _id },
+               {
+                  $push: {
+                     "carts.fields": {
+                        name: field,
+                        added: {
+                           date,
+                           start,
+                           end,
+                           price,
+                        },
+                     },
+                  },
+               }
+            );
          }
-      );
+      }
 
       next();
    } catch (err) {
