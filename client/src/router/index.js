@@ -4,6 +4,8 @@ import Home from "../views/guest/Home.vue";
 import Venue from "../views/guest/Venue.vue";
 import DetailVenue from "../views/guest/DetailVenue.vue";
 
+import ReviewOrder from "../views/guest/checkouts/ReviewOrder.vue";
+
 import EmailVerification from "../views/auth/EmailVerification.vue";
 import BasicProfile from "../views/auth/BasicProfile.vue";
 
@@ -49,6 +51,11 @@ const router = createRouter({
          path: "/user/profile",
          name: "User Profile",
          component: UserProfile,
+      },
+      {
+         path: "/checkout/review-order",
+         name: "Review Order",
+         component: ReviewOrder,
       },
       {
          path: "/:pathMatch(.*)*",

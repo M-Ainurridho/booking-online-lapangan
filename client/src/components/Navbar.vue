@@ -20,7 +20,7 @@
                   <a class="nav-link mx-2" href="/blog">Blog</a>
                </div>
                <div class="ms-0 navbar-left d-flex align-items-center">
-                  <i class="bx bx-cart fs-4 cart-desktop pointer pe-3 border-end" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                  <i class="bx bx-cart fs-4 cart-desktop pointer pe-3 border-end" @click="offcanvas = !offcanvas">
                      <span class="cart-count bg-navy text-center text-white fw-bold rounded-circle">{{ store.carts.length }}</span>
                   </i>
                   <div v-if="store.auth" @click="dropdown = !dropdown" class="px-3 d-flex align-items-center pointer" style="position: relative">
@@ -42,7 +42,7 @@
       </div>
    </nav>
 
-   <Cart />
+   <Cart :is-show="offcanvas" @close-cart="closeCart" />
 </template>
 
 <script>
@@ -56,10 +56,14 @@ export default {
       return {
          currentPage: "",
          dropdown: false,
+         offcanvas: false,
          store,
       };
    },
    methods: {
+      closeCart() {
+         this.offcanvas = !this.offcanvas;
+      },
       logout() {
          store.setAuth(false);
          store.setUser();

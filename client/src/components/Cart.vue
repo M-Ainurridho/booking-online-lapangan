@@ -1,8 +1,8 @@
 <template>
-   <div class="offcanvas offcanvas-end px-4" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+   <div ref="offcanvas" class="offcanvas offcanvas-end px-4" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
       <div class="offcanvas-header border-bottom">
          <h5 class="offcanvas-title mx-auto" id="offcanvasNavbarLabel">JADWAL DIPILIH</h5>
-         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" @click="closeOffcanvas"></button>
       </div>
       <div class="offcanvas-body" style="display: grid">
          <div v-if="store.carts.length < 1">
@@ -27,7 +27,7 @@
          </div>
 
          <div v-show="store.carts.length > 0" style="align-self: self-end">
-            <button class="bg-navy border text-white w-100 py-2 rounded-3 fw-medium">Selanjutnya</button>
+            <button @click="goToCheckout" class="bg-navy border text-white w-100 py-2 rounded-3 fw-medium">Selanjutnya</button>
          </div>
       </div>
    </div>
@@ -41,10 +41,19 @@ import { store } from "../utils/store";
 import axios from "axios";
 
 export default {
+   props: ["isShow"],
+   emits: ["close-cart"],
    data() {
       return {
          store,
       };
+   },
+   watch: {
+      isShow(newVal) {
+         if (newVal) {
+            this.$refs.offcanvas.classList.add("show");
+         }
+      },
    },
    methods: {
       startHour(time) {
@@ -66,6 +75,16 @@ export default {
          } catch (err) {
             console.log("error : " + err);
          }
+      },
+
+      goToCheckout() {
+         this.closeOffcanvas();
+
+         this.$router.push("/checkout/review-order");
+      },
+      closeOffcanvas() {
+         this.$refs.offcanvas.classList.remove("show");
+         this.$emit("close-cart");
       },
    },
 };
