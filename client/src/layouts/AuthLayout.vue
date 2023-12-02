@@ -13,11 +13,10 @@
 </template>
 
 <script>
-import { RouterLink } from "vue-router";
 import Navbar from "../views/auth/components/Navbar.vue";
 
 export default {
-   components: { Navbar, RouterLink },
+   components: { Navbar },
 };
 </script>
 

@@ -21,12 +21,11 @@
 </template>
 
 <script>
-import { RouterLink } from "vue-router";
 import Navbar from "../components/Navbar.vue";
 import Modal from "../components/Modal.vue";
 
 export default {
-   components: { Navbar, RouterLink, Modal },
+   components: { Navbar, Modal },
 };
 </script>
 

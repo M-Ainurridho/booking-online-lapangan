@@ -12,7 +12,7 @@
                         <span class="order-number d-inline-block bg-dark text-white text-center fs-xs rounded-circle me-2">1</span>
                         Review Order <i class="bx bx-chevron-right mx-1"></i>
                      </div>
-                     <div class="d-flex flex-row align-items-center fs-sm opacity-50">
+                     <div class="d-flex flex-row align-items-center fs-sm fw-medium">
                         <span class="order-number d-inline-block bg-dark text-white text-center fs-xs rounded-circle me-2">2</span>
                         Metode Pembayaran <i class="bx bx-chevron-right mx-1"></i>
                      </div>
@@ -25,36 +25,21 @@
             </div>
 
             <div class="my-4 wrapper">
-               <div class="review-order-list shadow p-4 rounded-3 w-100">
+               <!-- Data Penyewa -->
+               <div class="tenant-data shadow p-4 rounded-3 w-100">
                   <div class="row">
-                     <div class="col-12 border-bottom">
-                        <h6 class="card-title fw-semibold">{{ store.carts.venue }}</h6>
-                        <p class="card-text fs-sm">
-                           <span class="text-warning me-2"><i class="bx bxs-star me-2"></i>{{ store.carts.rating }}</span>
-                           <span><i class="bx bxs-circle me-2 fs-3xs"></i>{{ store.carts.address }}</span>
-                        </p>
-                     </div>
-                  </div>
-
-                  <div class="row" v-for="field in store.carts.fields" :key="field._id">
-                     <div class="col-12 py-2 border-bottom">
-                        <h6 class="card-title fw-medium">{{ field.name }}</h6>
-                        <div class="d-flex justify-content-between">
-                           <p class="m-0 fs-sm d-flex align-items-center"><i class="bx bxs-circle me-2 fs-3xs"></i>{{ field.added[0].date }}</p>
-                           <p class="m-0 fs-sm text-opacity-50 pointer">[Hapus]</p>
-                        </div>
-                        <div class="cart-schedule bg-body-tertiary rounded-2 py-2 mb-2 overflow-hidden" v-for="added in field.added">
-                           <div class="fs-sm px-3 d-flex justify-content-between">
-                              <span>{{ printHour(added.start) }} - {{ printHour(added.end) }}</span>
-                              <span>{{ printPrice(added.price) }}</span>
-                           </div>
-                        </div>
+                     <div class="col-12 border-bottom border-dotted pb-2">
+                        <h6 class="card-title fw-semibold"><i class="bx bx-play text-navy bg-navy-50 rounded-circle me-1"></i> Data Penyewa</h6>
                      </div>
                   </div>
 
                   <div class="row">
-                     <div class="col-12">
-                        <span class="fs-sm fw-semibold d-inline-block mt-2 pointer" @click="goToVenues"><i class="bx bx-arrow-back me-2"></i>Tambah Jadwal</span>
+                     <div class="col-12 mt-3">
+                        <input type="email" v-model="inputFullname" class="form-control fs-sm py-2" placeholder="Nama Lengkap*" />
+                     </div>
+                     <div class="col-12 mt-3 d-flex column-gap-3">
+                        <input type="tel" v-model="inputNoHp" class="form-control fs-sm py-2" placeholder="Nomor Telepon*" />
+                        <input type="email" v-model="inputEmail" class="form-control fs-sm py-2" placeholder="Email*" />
                      </div>
                   </div>
                </div>
@@ -111,21 +96,27 @@ import { setTitle, timeString, toRupiah } from "../../../utils";
 import Modal from "../../../components/Modal.vue";
 
 export default {
-   name: "Review Order",
+   name: "Checkout Payment",
    components: { RouterLink, Modal },
    data() {
       return {
+         inputFullname: "",
+         inputNoHp: "",
+         inputEmail: "",
          store,
       };
    },
    created() {
-      setTitle("Checkout - Review Order");
+      setTitle("Checkout - Payment Information");
+
+      this.inputFullname = store.user?.fullname;
+      this.inputNoHp = store.user?.noHp;
+      this.inputEmail = store.user?.email;
    },
    methods: {
       printHour(time) {
          return timeString(time);
       },
-
       printPrice(price) {
          return toRupiah(price);
       },
@@ -187,7 +178,7 @@ export default {
    gap: 24px;
 }
 
-.review-order-list,
+.tenant-data,
 .cost-breakdown {
    align-self: self-start;
 }

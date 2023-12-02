@@ -1,33 +1,38 @@
 <template>
-   <h4 class="card-title fw-medium">Masuk</h4>
-   <p class="fw-light fs-6">
-      Belum Punya Akun BOL?
-      <RouterLink to="#" class="text-navy" @click="store.setModal('register')">Daftar</RouterLink>
-   </p>
-   <form @submit.prevent="onSubmit">
-      <div class="mb-3">
-         <input type="email" v-model="inputEmail" class="form-control" placeholder="Alamat Email" />
-         <div v-if="errors.status" class="w-100 mx-auto text-start">
-            <small v-for="err in errors.data" class="text-danger fs-italic">
-               {{ err.path == "email" ? err.msg + " - " : "" }}
-            </small>
-         </div>
+   <div class="row">
+      <div class="col-11 bg-white rounded-2 py-3">
+         <h4 class="card-title fw-medium">Masuk</h4>
+         <p class="fw-light fs-6">
+            Belum Punya Akun BOL?
+            <RouterLink to="#" class="text-navy" @click="store.setModal('register')">Daftar</RouterLink>
+         </p>
+         <form @submit.prevent="onSubmit">
+            <div class="mb-3">
+               <input type="email" v-model="inputEmail" class="form-control" placeholder="Alamat Email" />
+               <div v-if="errors.status" class="w-100 mx-auto text-start">
+                  <small v-for="err in errors.data" class="text-danger fs-italic">
+                     {{ err.path == "email" ? err.msg + " - " : "" }}
+                  </small>
+               </div>
+            </div>
+            <div class="mb-3">
+               <input type="password" v-model="inputPassword" class="form-control" placeholder="Kata Sandi" />
+               <div v-if="errors.status" class="w-100 mx-auto text-start">
+                  <small v-for="err in errors.data" class="text-danger fs-italic">
+                     {{ err.path == "password" ? err.msg + " - " : "" }}
+                  </small>
+               </div>
+            </div>
+            <div class="mb-3">
+               <button type="submit" v-if="loading" class="border w-100 bg-body-secondary py-2 rounded-2 text-white" disabled>
+                  <Loading size="20px" color="border-secondary" thick="3px" />
+               </button>
+               <button type="submit" v-else class="border-0 w-100 bg-navy py-2 rounded-2 text-white">Selanjutnya</button>
+            </div>
+         </form>
       </div>
-      <div class="mb-3">
-         <input type="password" v-model="inputPassword" class="form-control" placeholder="Kata Sandi" />
-         <div v-if="errors.status" class="w-100 mx-auto text-start">
-            <small v-for="err in errors.data" class="text-danger fs-italic">
-               {{ err.path == "password" ? err.msg + " - " : "" }}
-            </small>
-         </div>
-      </div>
-      <div class="mb-3">
-         <button type="submit" v-if="loading" class="border w-100 bg-body-secondary py-2 rounded-2 text-white" disabled>
-            <Loading size="20px" color="border-secondary" thick="3px" />
-         </button>
-         <button type="submit" v-else class="border-0 w-100 bg-navy py-2 rounded-2 text-white">Selanjutnya</button>
-      </div>
-   </form>
+      <div class="col-md-1"><i class="bx bx-x close text-white fw-bold fs-3 pointer" @click="store.setModal()"></i></div>
+   </div>
 </template>
 
 <script>
