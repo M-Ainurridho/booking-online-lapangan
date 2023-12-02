@@ -120,7 +120,7 @@ import DetailLapangan from "./components/DetailLapangan.vue";
 
 import { RouterLink } from "vue-router";
 import { dates, setTimes } from "../../utils/date";
-import { toRupiah } from "../../utils";
+import { setTitle, toRupiah } from "../../utils";
 import { apiUrl } from "../../config/const";
 import axios from "axios";
 
@@ -147,6 +147,7 @@ export default {
 
          const venue = await axios.get(apiUrl(`venue/${_id}`));
          this.venue = venue.data.payload;
+         setTitle(`Booking Lapangan ${this.venue.name}`);
       } catch (err) {
          this.notFound = !this.notFound;
       }

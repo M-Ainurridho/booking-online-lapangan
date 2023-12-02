@@ -1,7 +1,7 @@
 <template>
    <GuestLayout #default>
       <Banner>
-         <h1 class="text-white fw-bold">Booking Lapangan Online Terbaik</h1>
+         <h1 class="text-white fw-bold">Booking Online Lapangan Terbaik</h1>
       </Banner>
 
       <section id="venue" class="py-5 px-3">

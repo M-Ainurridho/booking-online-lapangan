@@ -30,6 +30,14 @@ small,
    font-size: 14px !important;
 }
 
+.fs-2xs {
+   font-size: 10px !important;
+}
+
+.fs-3xs {
+   font-size: 8px !important;
+}
+
 .text-opacity-100 {
    color: rgba(0, 0, 0, 0);
 }

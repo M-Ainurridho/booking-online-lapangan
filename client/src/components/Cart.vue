@@ -26,7 +26,7 @@
             </div>
          </div>
 
-         <div v-show="store.carts.length > 0" style="align-self: self-end">
+         <div v-show="store.carts?.fields" style="align-self: self-end">
             <button @click="goToCheckout" class="bg-navy border text-white w-100 py-2 rounded-3 fw-medium">Selanjutnya</button>
          </div>
       </div>

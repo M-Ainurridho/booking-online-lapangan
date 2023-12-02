@@ -25,11 +25,13 @@ export default {
    },
    async created() {
       const date = dateString(this.time.start);
-      const { added } = store.carts.fields.find(({ name }) => name == this.field.name);
+      const cart = store.carts?.fields.find(({ name }) => name == this.field.name);
 
-      for (let i = 0; i < added.length; i++) {
-         if (added[i].start == this.time.start) {
-            return (this.addBooking = true);
+      if (cart) {
+         for (let i = 0; i < cart.added.length; i++) {
+            if (cart.added[i].start == this.time.start && cart.added[i].date == `${date[0]}, ${date[2]} ${date[1]} ${date[3]}`) {
+               return (this.addBooking = true);
+            }
          }
       }
    },
@@ -70,9 +72,12 @@ export default {
          this.$refs.buttonCard.classList.add("activeCard", "bg-navy-10");
          this.$refs.playTime.classList.add("text-navy");
          this.$refs.isBooked.classList.add("text-navy");
+         this.addBooking = !this.addBooking;
 
          const data = {
             venue: this.venue.name,
+            rating: this.venue.rating,
+            address: this.venue.city,
             field: this.field.name,
             date: `${date[0]}, ${date[2]} ${date[1]} ${date[3]}`,
             start: this.time.start,
@@ -85,8 +90,6 @@ export default {
             store.setCarts(addCart.data.payload);
          } catch (err) {
             console.log("error : " + err);
-         } finally {
-            this.addBooking = !this.addBooking;
          }
       },
    },

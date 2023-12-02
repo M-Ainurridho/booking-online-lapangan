@@ -117,7 +117,7 @@ const getCartByUserId = async (req, res) => {
 };
 
 const addCartByUserId = async (req, res, next) => {
-   const { venue, field, date, start, end, price } = req.body;
+   const { venue, rating, address, field, date, start, end, price } = req.body;
    const { _id } = req.params;
 
    try {
@@ -131,6 +131,8 @@ const addCartByUserId = async (req, res, next) => {
                   carts: {
                      _id: new mongoose.Types.ObjectId(),
                      venue,
+                     rating,
+                     address,
                      fields: {
                         name: field,
                         added: {

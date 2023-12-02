@@ -25,20 +25,11 @@ const userSchema = new Schema({
          },
       },
    ],
-   // carts: [
-   //    {
-   //       _id: mongoose.Schema.Types.ObjectId,
-   //       venue: String,
-   //       price: Number,
-   //       field: String,
-   //       date: String,
-   //       start: Number,
-   //       end: Number,
-   //    },
-   // ],
    carts: {
       _id: mongoose.Schema.Types.ObjectId,
       venue: String,
+      rating: String,
+      address: String,
       fields: [
          {
             name: String,
