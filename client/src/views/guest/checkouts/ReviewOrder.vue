@@ -41,7 +41,7 @@
                         <h6 class="card-title fw-medium">{{ field.name }}</h6>
                         <div class="d-flex justify-content-between">
                            <p class="m-0 fs-sm d-flex align-items-center"><i class="bx bxs-circle me-2 fs-3xs"></i>{{ field.added[0].date }}</p>
-                           <p class="m-0 fs-sm text-opacity-50 pointer">[Hapus]</p>
+                           <p class="m-0 fs-sm text-opacity-50 pointer" @click="deleteCart(field._id)">[Hapus]</p>
                         </div>
                         <div class="cart-schedule bg-body-tertiary rounded-2 py-2 mb-2 overflow-hidden" v-for="added in field.added">
                            <div class="fs-sm px-3 d-flex justify-content-between">
@@ -107,8 +107,10 @@
 import { RouterLink } from "vue-router";
 import { store } from "../../../utils/store";
 import { setTitle, timeString, toRupiah } from "../../../utils";
+import { apiUrl } from "../../../config/const";
 
 import Modal from "../../../components/Modal.vue";
+import axios from "axios";
 
 export default {
    name: "Review Order",
@@ -121,6 +123,9 @@ export default {
    created() {
       setTitle("Checkout - Review Order");
    },
+   beforeUpdate() {
+      !store.carts?.fields && this.$router.push("/venues");
+   },
    methods: {
       printHour(time) {
          return timeString(time);
@@ -129,16 +134,26 @@ export default {
       printPrice(price) {
          return toRupiah(price);
       },
+      async deleteCart(_id) {
+         try {
+            const response = await axios.delete(apiUrl(`user/cart/field/${_id}`));
+            store.setCarts(response.data.payload);
+         } catch (err) {
+            console.error(err);
+         }
+      },
       goToVenues() {
          this.$router.push("/venues");
       },
       allCosts() {
-         const fields = store.carts.fields;
+         const fields = store.carts?.fields;
          let costs = 0;
 
-         for (let i = 0; i < fields.length; i++) {
-            const reduce = fields[i].added.reduce((total, value) => value.price + total, 0);
-            costs += reduce;
+         if (fields) {
+            for (let i = 0; i < fields.length; i++) {
+               const reduce = fields[i].added.reduce((total, value) => value.price + total, 0);
+               costs += reduce;
+            }
          }
 
          return costs;

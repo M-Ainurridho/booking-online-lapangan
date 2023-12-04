@@ -41,7 +41,7 @@ const getUserBookingVenue = async (req, res) => {
       booked = booked.flat().filter((b) => b.day == day);
       response(200, "Get Booking Data", res, booked);
    } catch (err) {
-      console.log("Error : " + err);
+      console.error(err);
    }
 };
 
@@ -66,7 +66,7 @@ const bookingField = async (req, res) => {
 
       response(200, "Booking Field", res, { fieldName, day, start, end });
    } catch (err) {
-      console.log("Error : ", err);
+      console.error("Error : ", err);
    }
 };
 
@@ -75,19 +75,23 @@ const updateProfile = async (req, res, next) => {
    const { _id } = req.params;
 
    try {
-      !noHp
-         ? await User.findOneAndUpdate(
-              { _id },
-              {
-                 $set: { fullname, username, email },
-                 $unset: { noHp },
-              }
-           )
-         : await User.findOneAndUpdate({ _id }, { $set: { fullname, username, email, noHp } });
+      if (!username) {
+         await User.findOneAndUpdate({ _id }, { $set: { fullname, email, noHp } });
+      } else {
+         !noHp
+            ? await User.findOneAndUpdate(
+                 { _id },
+                 {
+                    $set: { fullname, username, email },
+                    $unset: { noHp },
+                 }
+              )
+            : await User.findOneAndUpdate({ _id }, { $set: { fullname, username, email, noHp } });
+      }
 
       next();
    } catch (err) {
-      console.log("error : " + err);
+      console.error(err);
    }
 };
 
@@ -99,20 +103,26 @@ const changePassword = async (req, res) => {
       const change = await User.findOneAndUpdate({ _id }, { $set: { password: hashPassword(newPassword) } });
       return response(200, "Successfuly! Changed Password", res, change);
    } catch (err) {
-      console.log("error : " + err);
+      console.error(err);
    }
 };
 
 const getCartByUserId = async (req, res) => {
    const { _id } = req.params;
+   let carts = {};
 
    try {
       const user = await User.findOne({ _id });
-      const carts = user.carts;
+
+      if (user.carts?.fields.length < 1) {
+         await User.findOneAndUpdate({ _id }, { $unset: { carts } });
+      } else {
+         carts = user.carts;
+      }
 
       response(200, "Get Cart By User Id", res, carts);
    } catch (err) {
-      console.log("error : " + err);
+      console.error(err);
    }
 };
 
@@ -189,7 +199,7 @@ const addCartByUserId = async (req, res, next) => {
 
       next();
    } catch (err) {
-      console.log("error : " + err);
+      console.error(err);
    }
 };
 
@@ -203,7 +213,21 @@ const deleteCartByUserId = async (req, res, next) => {
 
       next();
    } catch (err) {
-      console.log("error : " + err);
+      console.error(err);
+   }
+};
+
+const deleteCartByFieldId = async (req, res, next) => {
+   const { _id } = req.params;
+
+   try {
+      const user = await User.findOneAndUpdate({ "carts.fields._id": _id }, { $pull: { "carts.fields": { _id } } });
+
+      req.params._id = user._id;
+
+      next();
+   } catch (err) {
+      console.error(err);
    }
 };
 
@@ -219,4 +243,5 @@ module.exports = {
    getCartByUserId,
    addCartByUserId,
    deleteCartByUserId,
+   deleteCartByFieldId,
 };

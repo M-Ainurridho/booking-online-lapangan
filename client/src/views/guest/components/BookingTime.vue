@@ -25,6 +25,9 @@ export default {
    },
    async created() {
       const date = dateString(this.time.start);
+
+      if (!store.carts?.fields) return;
+      
       const cart = store.carts?.fields.find(({ name }) => name == this.field.name);
 
       if (cart) {

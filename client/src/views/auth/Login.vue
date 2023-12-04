@@ -62,9 +62,12 @@ export default {
 
          try {
             const response = await axios.post("http://localhost:3000/auth/login", { email: this.inputEmail, password: this.inputPassword });
-
             store.setUser(response.data.payload);
-            store.setCarts(response.data.payload.carts);
+
+            if (response.data.payload.carts.fields.length > 0) {
+               store.setCarts(response.data.payload.carts);
+            }
+
             store.setAuth(true);
             store.setModal();
             this.loading = !this.loading;

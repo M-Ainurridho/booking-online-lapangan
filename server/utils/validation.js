@@ -77,6 +77,19 @@ module.exports.updateProfileValidation = [
    },
 ];
 
+module.exports.paymentConfirmationValidation = [
+   body("fullname").trim().notEmpty().withMessage("Required input fullname"),
+   body("noHp").trim().notEmpty().withMessage("Required input nomor telepon").isMobilePhone("id-ID").withMessage("Invalid nomor telepon"),
+   body("email").trim().notEmpty().withMessage("Required input email").isEmail().withMessage("Invalid input email"),
+   (req, res, next) => {
+      const error = validationResult(req);
+
+      if (!error.isEmpty()) return response(402, "Error input", res, error.array());
+
+      next();
+   },
+];
+
 module.exports.changePasswordValidation = [
    body("oldPassword")
       .trim()

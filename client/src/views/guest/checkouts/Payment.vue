@@ -35,11 +35,30 @@
 
                   <div class="row">
                      <div class="col-12 mt-3">
-                        <input type="email" v-model="inputFullname" class="form-control fs-sm py-2" placeholder="Nama Lengkap*" />
+                        <input type="text" v-model="inputFullname" class="form-control fs-sm py-2" placeholder="Nama Lengkap*" />
+                        <div v-if="errors.status" class="w-100 mx-auto text-start">
+                           <small v-for="err in errors.data" class="text-danger fs-italic">
+                              {{ err.path == "fullname" ? err.msg + " - " : "" }}
+                           </small>
+                        </div>
                      </div>
                      <div class="col-12 mt-3 d-flex column-gap-3">
-                        <input type="tel" v-model="inputNoHp" class="form-control fs-sm py-2" placeholder="Nomor Telepon*" />
-                        <input type="email" v-model="inputEmail" class="form-control fs-sm py-2" placeholder="Email*" />
+                        <div class="fs-sm py-2">
+                           <input type="tel" v-model="inputNoHp" class="form-control fs-sm" placeholder="Nomor Telepon*" />
+                           <div v-if="errors.status" class="w-100 mx-auto text-start">
+                              <small v-for="err in errors.data" class="text-danger fs-italic">
+                                 {{ err.path == "noHp" ? err.msg + " - " : "" }}
+                              </small>
+                           </div>
+                        </div>
+                        <div class="fs-sm py-2">
+                           <input type="email" v-model="inputEmail" class="form-control" placeholder="Email*" />
+                           <div v-if="errors.status" class="w-100 mx-auto text-start">
+                              <small v-for="err in errors.data" class="text-danger fs-italic">
+                                 {{ err.path == "email" ? err.msg + " - " : "" }}
+                              </small>
+                           </div>
+                        </div>
                      </div>
                   </div>
                </div>
@@ -78,7 +97,7 @@
                      </div>
                   </div>
 
-                  <button class="w-100 border-0 bg-navy text-white py-2 mt-3 rounded-3 fw-medium fs-sm" @click="store.setModal('confirm-cart')">Lanjutkan Pembayaran</button>
+                  <button class="w-100 border-0 bg-navy text-white py-2 mt-3 rounded-3 fw-medium fs-sm" @click="userPay">Lanjutkan Pembayaran</button>
                </div>
             </div>
          </div>
@@ -92,8 +111,10 @@
 import { RouterLink } from "vue-router";
 import { store } from "../../../utils/store";
 import { setTitle, timeString, toRupiah } from "../../../utils";
+import { apiUrl } from "../../../config/const";
 
 import Modal from "../../../components/Modal.vue";
+import axios from "axios";
 
 export default {
    name: "Checkout Payment",
@@ -103,6 +124,11 @@ export default {
          inputFullname: "",
          inputNoHp: "",
          inputEmail: "",
+         errors: {
+            status: false,
+            data: [],
+         },
+         loading: false,
          store,
       };
    },
@@ -120,8 +146,24 @@ export default {
       printPrice(price) {
          return toRupiah(price);
       },
-      goToVenues() {
-         this.$router.push("/venues");
+      async userPay() {
+         this.loading = !this.loading;
+
+         try {
+            const response = await axios.patch(apiUrl(`user/confirm-payment/${store.user._id}`), {
+               fullname: this.inputFullname,
+               noHp: this.inputNoHp,
+               email: this.inputEmail,
+            });
+            // store.setUser(response.data.payload);
+            this.errors.status = false
+            console.log(response);
+         } catch (err) {
+            this.errors.status = true;
+            this.errors.data = err.response.data.errors;
+         } finally {
+            this.loading = !this.loading;
+         }
       },
       allCosts() {
          const fields = store.carts.fields;
