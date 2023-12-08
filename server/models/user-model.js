@@ -14,14 +14,20 @@ const userSchema = new Schema({
       type: Boolean,
       default: false,
    },
-   booking: [
+   booked: [
       {
-         _id: mongoose.Schema.Types.ObjectId,
-         day: String,
-         fieldName: String,
-         playTime: {
+         venue: String,
+         rating: String,
+         address: String,
+         city: String,
+         orderId: String,
+         status: String,
+         field: {
+            name: String,
+            date: String,
             start: Number,
             end: Number,
+            price: Number,
          },
       },
    ],
@@ -30,6 +36,7 @@ const userSchema = new Schema({
       venue: String,
       rating: String,
       address: String,
+      city: String,
       fields: [
          {
             name: String,

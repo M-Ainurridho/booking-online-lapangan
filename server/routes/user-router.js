@@ -3,11 +3,12 @@ const { user } = require("../controllers");
 const { updateProfileValidation, changePasswordValidation, paymentConfirmationValidation } = require("../utils/validation");
 
 router.get("/", user.getAllUsers);
-router.get("/booking/:day", user.getUserBookingVenue);
 router.get("/cart/:_id", user.getCartByUserId);
+router.get("/booking/:date", user.getUserBookingVenue);
+router.get("/booking/:_id/:status", user.getBookingByUserId);
 router.get("/:_id", user.getUserById);
 
-router.patch("/booking/:_id", user.bookingField);
+router.patch("/booking/:_id", user.bookingVenue, user.getUserById);
 router.patch("/cart/:_id", user.addCartByUserId, user.getCartByUserId);
 router.patch("/changepassword/:_id", changePasswordValidation, user.changePassword);
 router.patch("/:_id", updateProfileValidation, user.updateProfile, user.getUserById);

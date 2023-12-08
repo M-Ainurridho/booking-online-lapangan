@@ -27,7 +27,7 @@ export default {
       const date = dateString(this.time.start);
 
       if (!store.carts?.fields) return;
-      
+
       const cart = store.carts?.fields.find(({ name }) => name == this.field.name);
 
       if (cart) {
@@ -48,10 +48,10 @@ export default {
       if (this.booked.length < 1) return (this.$refs.isBooked.textContent = toRupiah(this.venue.price));
 
       for (let i = 0; i < this.booked.length; i++) {
-         if (this.booked[i].playTime.start === this.start) {
+         if (this.booked[i].field.start === this.time.start) {
             return (this.$refs.isBooked.textContent = "Booked"), this.$refs.buttonCard.classList.replace("pointer", "border-0"), this.$refs.buttonCard.setAttribute("disabled", "");
          } else {
-            this.$refs.isBooked.textContent = toRupiah(this.venuePrice);
+            this.$refs.isBooked.textContent = toRupiah(this.venue.price);
          }
       }
    },
@@ -80,7 +80,8 @@ export default {
          const data = {
             venue: this.venue.name,
             rating: this.venue.rating,
-            address: this.venue.city,
+            address: this.venue.address,
+            city: this.venue.city,
             field: this.field.name,
             date: `${date[0]}, ${date[2]} ${date[1]} ${date[3]}`,
             start: this.time.start,

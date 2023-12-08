@@ -9,15 +9,20 @@
             <slot></slot>
          </main>
       </template>
+
+      <template #modal>
+         <Modal />
+      </template>
    </Layout>
 </template>
 
 <script>
+import Modal from "../components/Modal.vue";
 import Navbar from "../components/Navbar.vue";
 import { store } from "../utils/store";
 
 export default {
-   components: { Navbar },
+   components: { Navbar, Modal },
    data() {
       return {
          store,

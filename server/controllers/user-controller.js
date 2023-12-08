@@ -1,10 +1,12 @@
 const { default: mongoose } = require("mongoose");
 const { hashPassword } = require("../utils/hash");
+const { orderId } = require("../utils/randomCode");
 
 const response = require("../response");
 
 const User = require("../models/user-model");
 
+// GET
 const getAllUsers = async (req, res) => {
    try {
       const users = await User.find();
@@ -30,41 +32,78 @@ const getUserById = async (req, res) => {
 };
 
 const getUserBookingVenue = async (req, res) => {
-   const { day } = req.params;
+   const { date } = req.params;
 
    try {
-      const data = await User.find({ "booking.day": day });
+      const data = await User.find({ "booked.field.date": date });
 
       if (data.length < 1) return response(404, "There aren't Booking Venue", res, data);
 
-      let booked = data.map(({ booking }) => booking);
-      booked = booked.flat().filter((b) => b.day == day);
+      let booked = data.map(({ booked }) => booked);
+      booked = booked.flat().filter(({ field }) => field.date == date);
+
       response(200, "Get Booking Data", res, booked);
    } catch (err) {
       console.error(err);
    }
 };
 
-const bookingField = async (req, res) => {
-   const { _id } = req.params;
-   const { fieldName, day, start, end } = req.body;
+const getBookingByUserId = async (req, res) => {
+   const { _id, status } = req.params;
 
    try {
-      const newBooking = await User.findOneAndUpdate(
-         { _id },
-         {
-            $push: {
-               booking: {
-                  _id: new mongoose.Types.ObjectId(),
-                  fieldName,
-                  day,
-                  playTime: { start, end },
-               },
-            },
-         }
-      );
+      const user = await User.findOne({ _id });
+      let booked = user.booked;
 
-      response(200, "Booking Field", res, { fieldName, day, start, end });
+      if (status != "Semua Status") {
+         booked = booked.filter((bk) => bk.status == status);
+      }
+      response(200, "Get Booking Data By User Id", res, booked);
+   } catch (err) {
+      console.error(err);
+   }
+};
+
+const bookingVenue = async (req, res, next) => {
+   const { _id } = req.params;
+   const { data } = req.body;
+
+   const fields = data.fields;
+
+   try {
+      const randomCode = orderId();
+
+      for (let x = 0; x < fields.length; x++) {
+         for (let z = 0; z < fields[x].added.length; z++) {
+            await User.findOneAndUpdate(
+               { _id },
+               {
+                  $push: {
+                     booked: {
+                        venue: data.venue,
+                        rating: data.rating,
+                        address: data.address,
+                        city: data.city,
+                        orderId: randomCode,
+                        status: "Menunggu Pembayaran",
+                        field: {
+                           name: fields[x].name,
+                           date: fields[x].added[z].date,
+                           start: fields[x].added[z].start,
+                           end: fields[x].added[z].end,
+                           price: fields[x].added[z].price,
+                        },
+                     },
+                  },
+                  $set: {
+                     carts: {},
+                  },
+               }
+            );
+         }
+      }
+
+      next();
    } catch (err) {
       console.error("Error : ", err);
    }
@@ -127,7 +166,7 @@ const getCartByUserId = async (req, res) => {
 };
 
 const addCartByUserId = async (req, res, next) => {
-   const { venue, rating, address, field, date, start, end, price } = req.body;
+   const { venue, rating, address, city, field, date, start, end, price } = req.body;
    const { _id } = req.params;
 
    try {
@@ -143,6 +182,7 @@ const addCartByUserId = async (req, res, next) => {
                      venue,
                      rating,
                      address,
+                     city,
                      fields: {
                         name: field,
                         added: {
@@ -235,7 +275,9 @@ module.exports = {
    getAllUsers,
    getUserById,
    getUserBookingVenue,
-   bookingField,
+   bookingVenue,
+
+   getBookingByUserId,
 
    updateProfile,
    changePassword,

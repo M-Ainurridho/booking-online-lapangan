@@ -1,5 +1,5 @@
 const nodemailer = require("nodemailer");
-const otpCode = require("./otpCode");
+const { otpCode } = require("./randomCode");
 
 const transporter = nodemailer.createTransport({
    host: "smtp.gmail.com",

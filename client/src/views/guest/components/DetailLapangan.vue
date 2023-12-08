@@ -37,8 +37,9 @@ export default {
    watch: {
       bookedTime(newVal) {
          this.dropdown = this.closeDropdown;
+
          if (newVal) {
-            const filter = newVal.filter((val) => val.fieldName == this.fieldName);
+            const filter = newVal.filter(({ field }) => field.name == this.field.name);
             this.booked = filter;
          }
       },

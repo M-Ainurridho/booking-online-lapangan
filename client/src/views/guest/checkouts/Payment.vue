@@ -155,15 +155,22 @@ export default {
                noHp: this.inputNoHp,
                email: this.inputEmail,
             });
-            // store.setUser(response.data.payload);
-            this.errors.status = false
-            console.log(response);
+            store.setUser(response.data.payload);
+            this.errors.status = false;
          } catch (err) {
             this.errors.status = true;
             this.errors.data = err.response.data.errors;
-         } finally {
-            this.loading = !this.loading;
          }
+
+         try {
+            await axios.patch(apiUrl(`user/booking/${store.user._id}`), { data: store.carts });
+            store.setCarts();
+            this.$router.push("/dashboard");
+         } catch (err) {
+            console.error(err);
+         }
+
+         this.loading = !this.loading;
       },
       allCosts() {
          const fields = store.carts.fields;

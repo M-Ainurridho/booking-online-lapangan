@@ -1,8 +1,6 @@
 <template>
    <section id="modal" v-if="store.modal" class="d-flex align-items">
-      <div class="col-md-4 mx-auto my-auto">
-         <component :is="store.modalName"></component>
-      </div>
+      <component :is="store.modalName"></component>
    </section>
 </template>
 
@@ -10,12 +8,18 @@
 import Login from "../views/auth/Login.vue";
 import Register from "../views/auth/Register.vue";
 import ConfirmCart from "../views/guest/components/ConfirmCart.vue";
+import BookingDetail from "../views/users/components/BookingDetail.vue";
 
 import { store } from "../utils/store";
 
 export default {
    props: ["modalName"],
-   components: { login: Login, register: Register, "confirm-cart": ConfirmCart },
+   components: {
+      login: Login,
+      register: Register,
+      "confirm-cart": ConfirmCart,
+      "booking-detail": BookingDetail,
+   },
    data() {
       return {
          store,

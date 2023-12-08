@@ -90,7 +90,7 @@
                         <div class="row">
                            <div class="col-7 d-flex justify-content-between">
                               <div ref="jadwal" v-for="(date, index) in jadwal" :key="index" class="booking-date p-2 pt-1 rounded-3" @click="currentlySchedule(index, date)">
-                                 <h6 class="lead fs-xs text-center">{{ date[0] }}</h6>
+                                 <h6 class="lead fs-xs text-center">{{ printDay(date[0]) }}</h6>
                                  <span>{{ date[1] }} {{ date[2] }}</span>
                               </div>
                            </div>
@@ -119,7 +119,7 @@ import BreadCrumbs from "./components/BreadCrumbs.vue";
 import DetailLapangan from "./components/DetailLapangan.vue";
 
 import { RouterLink } from "vue-router";
-import { dates, setTimes } from "../../utils/date";
+import { dates, getDay, setTimes } from "../../utils/date";
 import { setTitle, toRupiah } from "../../utils";
 import { apiUrl } from "../../config/const";
 import axios from "axios";
@@ -152,12 +152,7 @@ export default {
          this.notFound = !this.notFound;
       }
 
-      try {
-         const booking = await axios.get(apiUrl(`user/booking/${this.jadwal[0][2]} ${this.jadwal[0][1]}, ${this.jadwal[0][3]}`));
-         this.booked = booking.data.payload;
-      } catch (err) {
-         this.booked = err.response.data.errors;
-      }
+      this.bookedField(`${this.jadwal[0][0]}, ${this.jadwal[0][1]} ${this.jadwal[0][2]} ${this.jadwal[0][3]}`);
 
       const arrTime = this.venue.open.split(" - ");
       this.bookingTime = setTimes(arrTime, this.jadwal[0]);
@@ -171,6 +166,9 @@ export default {
       this.$refs.jadwal[0].classList.add("bg-navy", "text-white");
    },
    methods: {
+      printDay(day) {
+         return getDay(day);
+      },
       async currentlySchedule(index, date) {
          const schedules = this.$refs.jadwal;
          for (let i = 0; i < schedules.length; i++) {
@@ -181,9 +179,12 @@ export default {
          const arrTime = this.venue.open.split(" - ");
          this.bookingTime = setTimes(arrTime, [null, date[1], date[2], date[3]]);
 
+         this.bookedField(`${date[0]}, ${date[1]} ${date[2]} ${date[3]}`);
+      },
+
+      async bookedField(date) {
          try {
-            const day = `${date[2]} ${date[1]}, ${date[3]}`;
-            const booking = await axios.get(apiUrl(`user/booking/${day}`));
+            const booking = await axios.get(apiUrl(`user/booking/${date}`));
             this.booked = booking.data.payload;
          } catch (err) {
             this.booked = err.response.data.errors;

@@ -1,4 +1,4 @@
-const getDay = (day) => {
+export const getDay = (day) => {
    const days = ["Senin", "Selasa", "Rabu", "Kamis", "Jum'at", "Sabtu", "Minggu"];
    switch (day) {
       case "Sun": {
@@ -34,6 +34,41 @@ const getDay = (day) => {
    return day;
 };
 
+const getMonth = (month) => {
+   const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+
+   // switch (month) {
+   //    case "Jan": {
+   //       day = days[6];
+   //       break;
+   //    }
+   //    case "Feb": {
+   //       day = days[0];
+   //       break;
+   //    }
+   //    case "Mar": {
+   //       day = days[1];
+   //       break;
+   //    }
+   //    case "Apr": {
+   //       day = days[2];
+   //       break;
+   //    }
+   //    case "May": {
+   //       day = days[3];
+   //       break;
+   //    }
+   //    case "Jun": {
+   //       day = days[4];
+   //       break;
+   //    }
+   //    case "Jul": {
+   //       day = days[5];
+   //       break;
+   //    }
+   // }
+};
+
 export const dates = () => {
    const jadwal = [];
    const now = Date.now();
@@ -41,9 +76,8 @@ export const dates = () => {
 
    for (let i = now; i < week; i += 1000 * 60 * 60 * 24) {
       const date = new Date(i).toDateString().split(" ");
-      let day = getDay(date[0]);
 
-      jadwal.push([day, date[2], date[1], date[3]]);
+      jadwal.push([date[0], date[2], date[1], date[3]]);
    }
 
    return jadwal;
