@@ -1,5 +1,5 @@
 <template>
-   <div class="col-md-4 mx-auto my-auto">
+   <div class="col-md-3 mx-auto my-auto">
       <div class="row">
          <div class="col-12 bg-white rounded-2 py-3">
             <div class="d-flex justify-content-between align-items-center">
@@ -9,10 +9,10 @@
             <p class="fw-light fs-6">
                Belum Punya Akun BOL?
                <RouterLink to="#" class="text-navy" @click="store.setModal('register')">Daftar</RouterLink>
-            </p>
+            </p> 
             <form @submit.prevent="onSubmit">
                <div class="mb-3">
-                  <input type="email" v-model="inputEmail" class="form-control" placeholder="Alamat Email" />
+                  <input type="email" v-model="inputEmail" class="form-control" placeholder="Alamat Email" autofocus />
                   <div v-if="errors.status" class="w-100 mx-auto text-start">
                      <small v-for="err in errors.data" class="text-danger fs-italic">
                         {{ err.path == "email" ? err.msg + " - " : "" }}

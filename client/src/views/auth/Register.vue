@@ -1,5 +1,5 @@
 <template>
-   <div class="col-md-4 mx-auto my-auto">
+   <div class="col-md-3 mx-auto my-auto">
       <div class="row">
          <div class="col-12 bg-white rounded-2 py-3">
             <div class="d-flex justify-content-between align-items-center">
@@ -12,7 +12,7 @@
             </p>
             <form @submit.prevent="onSubmit">
                <div class="mb-3">
-                  <input type="text" v-model="inputEmail" class="form-control" placeholder="Alamat Email" />
+                  <input type="text" v-model="inputEmail" class="form-control" placeholder="Alamat Email" autofocus />
                   <div v-if="errors.status">
                      <small v-for="err in errors.data" class="text-danger fs-italic">
                         {{ err.msg }}
@@ -20,7 +20,10 @@
                   </div>
                </div>
                <div class="mb-3">
-                  <button type="submit" class="border-0 w-100 py-2 rounded-2 text-white" :class="loading ? 'bg-secondary' : 'bg-navy'" :disabled="loading && 'disabled'">{{ loading ? "Loading..." : "Selanjutnya" }}</button>
+                  <button type="submit" v-if="loading" class="border w-100 bg-body-secondary py-2 rounded-2 text-white" disabled>
+                     <Loading size="20px" color="border-secondary" thick="3px" />
+                  </button>
+                  <button type="submit" v-else class="border-0 w-100 bg-navy py-2 rounded-2 text-white">Selanjutnya</button>
                </div>
             </form>
          </div>
@@ -31,9 +34,13 @@
 <script>
 import { RouterLink } from "vue-router";
 import { store } from "../../utils/store";
+import {apiUrl} from "../../config/const"
 import axios from "axios";
 
+import Loading from "../../components/Loading.vue";
+
 export default {
+   components: {Loading},
    data() {
       return {
          inputEmail: "",
@@ -51,7 +58,7 @@ export default {
          this.loading = true;
 
          try {
-            const response = await axios.post("http://localhost:3000/auth/register", { email: this.inputEmail });
+            const response = await axios.post(apiUrl(`auth/register`), {email: this.inputEmail});
             store.setUser(response.data.payload);
 
             this.$router.push("/auth/otp/email");

@@ -81,9 +81,10 @@ export default {
 
             const user = await axios.get(`http://localhost:3000/user/${data.payload._id}`);
             if (user.status === 200) {
-               store.setAuth();
+               store.setAuth(true);
                store.setUser(user.data.payload);
-               this.$router.push("/dashboard");
+               store.setModal()
+               this.$router.push("/user/profile");
             }
          } catch (err) {
             this.errors.status = true;

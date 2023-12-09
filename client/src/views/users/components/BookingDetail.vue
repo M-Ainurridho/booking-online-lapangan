@@ -1,5 +1,5 @@
 <template>
-   <div class="col-md-6 mx-auto my-auto">
+   <div class="col-md-6 mx-auto overflow-y-scroll overflow-hidden">
       <div class="row bg-white rounded-2 p-4">
          <div class="col-12 mb-4">
             <div class="d-flex justify-content-between align-items-center">
@@ -29,7 +29,7 @@
             </div>
          </div>
 
-         <div class="col-12 shadow p-4 rounded-3">
+         <div class="col-12 shadow p-4 rounded-3 mb-4">
             <div class="d-flex align-items-center">
                <i class="bx bx-play text-navy bg-navy-50 rounded-circle me-1"></i>
                <h6 class="m-0 fw-bold">Detail Booking</h6>
@@ -52,6 +52,48 @@
                </div>
             </div>
          </div>
+
+         <div class="col-12 shadow p-4 rounded-3 mb-4">
+            <div class="d-flex align-items-center mb-3">
+               <i class="bx bx-play text-navy bg-navy-50 rounded-circle me-1"></i>
+               <h6 class="m-0 fw-bold">Ringkasan Pembayaran</h6>
+            </div>
+            <div class="pb-3">
+               <h6 class="m-0 fs-sm mb-1">Biaya Sewa</h6>
+               <div class="fs-sm d-flex">
+                  <div class="flex-grow-1">
+                     <i class="bx bx-play text-navy me-1"></i>
+                     <span>{{ store.bookingDetail.field.name }}</span>
+                  </div>
+                  <div class=" fw-semibold">
+                     {{ printPrice }}
+                  </div>
+               </div>
+            </div>
+            <div class="pb-3">
+               <h6 class="m-0 fs-sm mb-2">Biaya Produk Tambahan</h6>
+               <div class="fs-sm d-flex">
+                  <div class="flex-grow-1">
+                     Layanan Produk
+                  </div>
+                  <div class=" fw-semibold">
+                     Rp 5.000
+                  </div>
+               </div>
+            </div>
+            <div class="pt-3 border-top">
+               <div class="fs-sm d-flex">
+                  <div class="flex-grow-1 fw-semibold">
+                     Total bayar
+                  </div>
+                  <div class=" fw-semibold">
+                     {{ totalPrice }}
+                  </div>
+               </div>
+            </div>
+         </div>
+
+         <button class="border bg-navy py-2 rounded-3 text-white mb-2 fs-sm">Selesaikan Pembayaran</button>
       </div>
    </div>
 </template>
@@ -77,6 +119,10 @@ export default {
 
       printPrice() {
          return toRupiah(store.bookingDetail.field.price);
+      },
+
+      totalPrice() {
+         return toRupiah(store.bookingDetail.field.price + 5000);
       },
    },
 };

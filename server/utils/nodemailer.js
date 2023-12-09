@@ -1,10 +1,15 @@
 const nodemailer = require("nodemailer");
-const { otpCode } = require("./randomCode");
+const {
+   otpCode
+} = require("./randomCode");
 
 const transporter = nodemailer.createTransport({
    host: "smtp.gmail.com",
    port: 465,
    secure: true,
+   tls: {
+      rejectUnauthorized: false
+   },
    auth: {
       // TODO: replace `user` and `pass` values from <https://forwardemail.net>
       user: "m.ainurridho11@gmail.com",
@@ -14,7 +19,9 @@ const transporter = nodemailer.createTransport({
 
 // async..await is not allowed in global scope, must use a wrapper
 const sendMailer = async (req, res, next) => {
-   const { email } = req.body;
+   const {
+      email
+   } = req.body;
    req.otp = otpCode();
 
    try {
@@ -27,8 +34,10 @@ const sendMailer = async (req, res, next) => {
 
       next();
    } catch (err) {
-      console.log(err);
+      console.log("error : " + err);
    }
 };
 
-module.exports = { sendMailer };
+module.exports = {
+   sendMailer
+};
