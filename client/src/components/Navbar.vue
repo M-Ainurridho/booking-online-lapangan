@@ -28,7 +28,7 @@
 
                      <div v-show="dropdown" class="profile-dropdown border bg-white p-2 rounded-3">
                         <RouterLink to="/user/profile" class="d-block text-decoration-none border-bottom py-2 text-dark"><i class="bx bx-fw bxs-edit"></i> Profil</RouterLink>
-                        <RouterLink to="/dashboard" class="d-block text-decoration-none border-bottom py-2 text-dark"><i class="bx bx-fw bx-detail"></i> Dasbor</RouterLink>
+                        <span @click="goToDashboard" class="d-block text-decoration-none border-bottom py-2 text-dark"><i class="bx bx-fw bx-detail"></i> Dasbor</span>
                         <RouterLink to="#" @click="logout" class="d-block text-decoration-none py-2 text-dark">Keluar</RouterLink>
                      </div>
                   </div>
@@ -84,6 +84,13 @@ export default {
             return 0;
          }
       },
+      goToDashboard() {
+         if (store.user.role == "admin") {
+            this.$router.push("/admin");
+         } else {
+            this.$router.push("/dashboard");
+         }
+      },
    },
 };
 </script>
@@ -132,7 +139,8 @@ export default {
    width: 200px;
 }
 
-.profile-dropdown a:hover {
+.profile-dropdown a:hover,
+.profile-dropdown span:hover {
    background-color: rgba(0, 0, 128, 0.05);
 }
 

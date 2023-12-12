@@ -10,11 +10,8 @@ const User = require("../models/user-model");
 const getAllUsers = async (req, res) => {
    try {
       const users = await User.find();
-      res.json({
-         status: 200,
-         message: "Get All Users",
-         payload: users,
-      });
+
+      response(200, "Get All Users", res, users);
    } catch (err) {
       console.log(err);
    }
@@ -48,6 +45,17 @@ const getUserBookingVenue = async (req, res) => {
    }
 };
 
+const getAllBooking = async (req, res) => {
+   try {
+      const users = await User.find();
+      const booked = users.map((user) => user.booked);
+
+      response(200, "Get All Booking Data", res, booked.flat());
+   } catch (err) {
+      console.error(err);
+   }
+};
+
 const getBookingByUserId = async (req, res) => {
    const { _id, status } = req.params;
 
@@ -61,6 +69,8 @@ const getBookingByUserId = async (req, res) => {
       response(200, "Get Booking Data By User Id", res, booked);
    } catch (err) {
       console.error(err);
+   } finally {
+      delete req.params._id, req.params.status;
    }
 };
 
@@ -71,7 +81,7 @@ const bookingVenue = async (req, res, next) => {
    const fields = data.fields;
 
    try {
-      const randomCode = orderId();
+      const expired = Date.now() + 1000 * 60 * 15;
 
       for (let x = 0; x < fields.length; x++) {
          for (let z = 0; z < fields[x].added.length; z++) {
@@ -84,8 +94,9 @@ const bookingVenue = async (req, res, next) => {
                         rating: data.rating,
                         address: data.address,
                         city: data.city,
-                        orderId: randomCode,
+                        orderId: orderId(),
                         status: "Menunggu Pembayaran",
+                        expired,
                         field: {
                            name: fields[x].name,
                            date: fields[x].added[z].date,
@@ -271,19 +282,89 @@ const deleteCartByFieldId = async (req, res, next) => {
    }
 };
 
+const uploadProof = async (req, res, next) => {
+   const { _id } = req.params;
+
+   if (req.file === undefined) return response(402, "Bad Request", res, [{ path: "image", msg: "Invalid image extension" }]);
+
+   try {
+      const status = "Menunggu Konfirmasi";
+      const user = await User.findOneAndUpdate(
+         { "booked._id": _id },
+         {
+            $set: {
+               "booked.$.imageProof": req.file.filename,
+               "booked.$.status": status,
+            },
+            $unset: {
+               "booked.$.expired": null,
+            },
+         }
+      );
+
+      req.params._id = user._id;
+      req.params.status = status;
+
+      next();
+   } catch (err) {
+      console.error(err);
+   }
+};
+
+const deleteBooking = async (req, res) => {
+   try {
+      const now = Date.now();
+      const users = await User.find();
+
+      for (let i = 0; i < users.length; i++) {
+         for (let j = 0; j < users[i].booked.length; j++) {
+            if (now > users[i].booked[j]?.expired) {
+               await User.findOneAndUpdate(
+                  { _id: users[i]._id },
+                  {
+                     $pull: { booked: { _id: users[i].booked[j]._id } },
+                  }
+               );
+            }
+         }
+      }
+   } catch (err) {
+      console.error(err);
+   }
+};
+
+const updateStatusBooking = async (req, res, next) => {
+   const { _id, status } = req.params;
+
+   try {
+      if (status === "O") {
+         await User.findOneAndUpdate({ "booked._id": _id }, { $set: { "booked.$.status": "Berhasil" } });
+      } else {
+         await User.findOneAndUpdate({ "booked._id": _id }, { $pull: { booked: { _id } } });
+      }
+
+      next();
+   } catch (err) {
+      console.error(err);
+   }
+};
+
 module.exports = {
    getAllUsers,
    getUserById,
-   getUserBookingVenue,
-   bookingVenue,
-
-   getBookingByUserId,
-
-   updateProfile,
-   changePassword,
-
    getCartByUserId,
+   getUserBookingVenue,
+   getBookingByUserId,
+   getAllBooking,
+
+   bookingVenue,
+   updateProfile,
    addCartByUserId,
+   changePassword,
+   uploadProof,
+   updateStatusBooking,
+
    deleteCartByUserId,
    deleteCartByFieldId,
+   deleteBooking,
 };

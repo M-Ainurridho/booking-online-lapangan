@@ -14,6 +14,10 @@ const userSchema = new Schema({
       type: Boolean,
       default: false,
    },
+   role: {
+      type: String,
+      default: "member",
+   },
    booked: [
       {
          venue: String,
@@ -22,6 +26,11 @@ const userSchema = new Schema({
          city: String,
          orderId: String,
          status: String,
+         expired: Number,
+         imageProof: {
+            type: String,
+            default: "nophoto.png",
+         },
          field: {
             name: String,
             date: String,

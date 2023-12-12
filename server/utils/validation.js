@@ -11,6 +11,8 @@ module.exports.emailValidation = [
       .trim()
       .notEmpty()
       .withMessage("Required input email")
+      .isEmail()
+      .withMessage("Invalid input email")
       .custom(async (value) => {
          const duplicate = await User.findOne({ email: value });
 

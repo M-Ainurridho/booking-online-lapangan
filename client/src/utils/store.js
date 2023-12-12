@@ -43,8 +43,14 @@ export const store = reactive({
       this.alert.statusCode = code;
       this.alert.message = message;
    },
-   bookingDetail: {},
+   booking: {
+      data: [],
+      detail: {},
+   },
+   setBooking(data = []) {
+      this.booking.data = data;
+   },
    setDetailBooking(data = {}) {
-      this.bookingDetail = data;
+      this.booking.detail = data;
    },
 });

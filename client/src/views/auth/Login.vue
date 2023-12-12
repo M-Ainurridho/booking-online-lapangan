@@ -9,7 +9,7 @@
             <p class="fw-light fs-6">
                Belum Punya Akun BOL?
                <RouterLink to="#" class="text-navy" @click="store.setModal('register')">Daftar</RouterLink>
-            </p> 
+            </p>
             <form @submit.prevent="onSubmit">
                <div class="mb-3">
                   <input type="email" v-model="inputEmail" class="form-control" placeholder="Alamat Email" autofocus />

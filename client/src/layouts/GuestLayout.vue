@@ -24,8 +24,15 @@
 import Navbar from "../components/Navbar.vue";
 import Modal from "../components/Modal.vue";
 
+import axios from "axios";
+import { apiUrl } from "../config/const";
+
 export default {
    components: { Navbar, Modal },
+   name: "Guest Layout",
+   async created() {
+      const response = await axios.delete(apiUrl("user/booking"));
+   },
 };
 </script>
 

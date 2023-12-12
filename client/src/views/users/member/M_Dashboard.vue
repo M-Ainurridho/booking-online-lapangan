@@ -20,7 +20,7 @@
                </div>
             </div>
 
-            <div class="row" v-if="booking.length < 1">
+            <div class="row" v-if="store.booking.data < 1">
                <div class="col-12 d-flex flex-column justify-content-center align-items-center">
                   <img src="../../assets/images/icons/document.png" alt="" class="h-25" />
                   <div class="row mt-3">
@@ -32,8 +32,12 @@
                </div>
             </div>
 
-            <div v-else v-for="bk in booking" :key="bk._id" class="row booking px-3 mb-3">
+            <div v-else v-for="bk in store.booking.data" :key="bk._id" class="row booking px-3 mb-3">
                <div class="col-12 border p-4 rounded-3 shadow-sm pointer" @click="bookingDetailModal(bk._id)">
+                  <i class="booking-clip" 
+                  :class="bk.status == 'Menunggu Pembayaran' ? 
+                  'bg-secondary' : bk.status == 'Menunggu Konfirmasi' ? 'bg-warning' : 'bg-success'"
+                  ></i>
                   <div class="booking-status">
                      <h6 class="mb-3 text-opacity-50">
                         {{ bk.status }} <span class="fs-sm ms-2">/bk/{{ bk.orderId }}</span>
@@ -61,22 +65,21 @@
 </template>
 
 <script>
-import UserLayout from "../../layouts/UserLayout.vue";
-import BreadCrumbs from "../guest/components/BreadCrumbs.vue";
+import UserLayout from "../../../layouts/UserLayout.vue";
+import BreadCrumbs from "../../guest/components/BreadCrumbs.vue";
 
 import axios from "axios";
-import { store } from "../../utils/store";
-import { apiUrl } from "../../config/const";
-import { timeString } from "../../utils";
+import { store } from "../../../utils/store";
+import { apiUrl } from "../../../config/const";
+import { timeString } from "../../../utils";
 
 export default {
-   name: "Dashboard",
+   name: "Member Dashboard",
    components: { UserLayout, BreadCrumbs },
    data() {
       return {
          currentMenu: "",
          currentStatus: "",
-         booking: [],
          store,
       };
    },
@@ -95,7 +98,7 @@ export default {
          if (this.currentMenu == "Booking") {
             this.fetchBooking();
          } else {
-            this.booking = [];
+            store.setBooking();
          }
 
          store.setUserMenu(menu);
@@ -113,14 +116,14 @@ export default {
       async fetchBooking() {
          try {
             const response = await axios.get(apiUrl(`user/booking/${store.user._id}/${this.currentStatus}`));
-            this.booking = response.data.payload;
+            store.setBooking(response.data.payload);
          } catch (err) {
             console.error(err);
          }
       },
 
       bookingDetailModal(_id) {
-         const found = this.booking.find((bk) => bk._id == _id);
+         const found = store.booking.data.find((bk) => bk._id == _id);
          store.setDetailBooking(found);
          store.setModal("booking-detail");
       },
@@ -157,18 +160,13 @@ export default {
    position: relative;
 }
 
-.booking::before {
-   content: "";
-   display: block;
-
+.booking-clip {
    position: absolute;
 
    left: 16px;
-   top: 25px;
-   width: 6px;
-   height: 18px;
-
-   background-color: orange;
+   top: 24px;
+   width: 8px;
+   height: 20px;
 
    border-top-right-radius: 5px;
    border-bottom-right-radius: 5px;

@@ -3,14 +3,15 @@ import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/guest/Home.vue";
 import Venue from "../views/guest/Venue.vue";
 import DetailVenue from "../views/guest/DetailVenue.vue";
-
 import ReviewOrder from "../views/guest/checkouts/ReviewOrder.vue";
 import Payment from "../views/guest/checkouts/Payment.vue";
 
 import EmailVerification from "../views/auth/EmailVerification.vue";
 import BasicProfile from "../views/auth/BasicProfile.vue";
 
-import Dashboard from "../views/users/Dashboard.vue";
+import M_Dashboard from "../views/users/member/M_Dashboard.vue";
+import AdminAccess from "../views/users/admin/index.vue";
+
 import UserProfile from "../views/users/UserProfile.vue";
 
 import NotFound from "../views/errors/NotFound.vue";
@@ -34,6 +35,16 @@ const router = createRouter({
          component: DetailVenue,
       },
       {
+         path: "/checkout/review-order",
+         name: "Review Order",
+         component: ReviewOrder,
+      },
+      {
+         path: "/checkout/payment",
+         name: "Checkout Payment",
+         component: Payment,
+      },
+      {
          path: "/auth/otp/email",
          name: "Email Verification",
          component: EmailVerification,
@@ -45,24 +56,20 @@ const router = createRouter({
       },
       {
          path: "/dashboard",
-         name: "Dashboard",
-         component: Dashboard,
+         name: "Member Dashboard",
+         component: M_Dashboard,
+      },
+      {
+         path: "/admin",
+         name: "Admin Access",
+         component: AdminAccess,
       },
       {
          path: "/user/profile",
          name: "User Profile",
          component: UserProfile,
       },
-      {
-         path: "/checkout/review-order",
-         name: "Review Order",
-         component: ReviewOrder,
-      },
-      {
-         path: "/checkout/payment",
-         name: "Checkout Payment",
-         component: Payment,
-      },
+
       {
          path: "/:pathMatch(.*)*",
          name: "Not Found",
