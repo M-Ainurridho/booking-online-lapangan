@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const { user } = require("../controllers");
-const { upload } = require("../utils/upload");
+const { proofPayment } = require("../utils/upload");
 const { updateProfileValidation, changePasswordValidation, paymentConfirmationValidation } = require("../utils/validation");
 
 router.get("/", user.getAllUsers);
@@ -10,7 +10,7 @@ router.get("/booking/:date", user.getUserBookingVenue);
 router.get("/booking/:_id/:status", user.getBookingByUserId);
 router.get("/:_id", user.getUserById);
 
-router.patch("/booking/upload-bukti/:_id", upload.single("image"), user.uploadProof, user.getBookingByUserId);
+router.patch("/booking/upload-bukti/:_id", proofPayment.single("image"), user.uploadProof, user.getBookingByUserId);
 router.patch("/booking/:_id", user.bookingVenue, user.getUserById);
 router.patch("/booking/:_id/:status", user.updateStatusBooking, user.getAllBooking);
 router.patch("/cart/:_id", user.addCartByUserId, user.getCartByUserId);

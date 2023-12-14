@@ -124,3 +124,23 @@ module.exports.changePasswordValidation = [
       next();
    },
 ];
+
+// Venue validation
+module.exports.addVenueValidation = [
+   body("name").trim().notEmpty().withMessage("Required input nama"),
+   body("description").trim().notEmpty().withMessage("Required input deskripsi"),
+   body("price").trim().notEmpty().withMessage("Required input min harga"),
+   body("image").trim().notEmpty().withMessage("Required input gambar"),
+   body("provinsi").trim().notEmpty().withMessage("Required input provinsi"),
+   body("city").trim().notEmpty().withMessage("Required input kota"),
+   body("address").trim().notEmpty().withMessage("Required input alamat"),
+   body("open").trim().notEmpty().withMessage("Required input waktu buka"),
+   body("close").trim().notEmpty().withMessage("Required input waktu tutup"),
+   (req, res, next) => {
+      const error = validationResult(req);
+
+      if (!error.isEmpty()) return response(402, "Error input", res, error.array());
+
+      next();
+   },
+];

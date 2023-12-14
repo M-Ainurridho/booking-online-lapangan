@@ -2,17 +2,26 @@ const { mongoose, Schema } = require("mongoose");
 
 const venueSchema = new Schema({
    name: String,
-   images: [String],
+   images: {
+      default: "nophoto.jpg",
+      type: [String],
+   },
    description: String,
-   fields: [
-      {
-         _id: mongoose.Schema.Types.ObjectId,
-      },
-   ],
+   fields: {
+      require: false,
+      type: [
+         {
+            _id: mongoose.Schema.Types.ObjectId,
+         },
+      ],
+   },
    price: Number,
    address: String,
    city: String,
-   rating: String,
+   rating: {
+      default: "5.00",
+      type: String,
+   },
    open: String,
 });
 

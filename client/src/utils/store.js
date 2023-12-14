@@ -53,4 +53,14 @@ export const store = reactive({
    setDetailBooking(data = {}) {
       this.booking.detail = data;
    },
+   venues: {
+      data: [],
+      detail: {},
+   },
+   setVenues(data = []) {
+      this.venues.data = data;
+   },
+   setDetailVenue(data = {}) {
+      this.venues.detail = data;
+   },
 });

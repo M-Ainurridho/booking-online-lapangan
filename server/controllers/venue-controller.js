@@ -33,4 +33,52 @@ const addNewField = async (req, res) => {
    }
 };
 
-module.exports = { getAllVenues, getVenueById, addNewField };
+const addNewVenue = async (req, res) => {
+   let { name, description, price, provinsi, city, address, open, close } = req.body;
+
+   open = open + " - " + close;
+
+   try {
+      const newVenue = await new Venue({ name, description, price, image: "nophoto.jpg", city, address, open }).save();
+      response(200, "Add New Venue", res, newVenue);
+   } catch (err) {
+      console.error(err);
+   }
+};
+
+const replaceImage = async (req, res, next) => {
+   const { _id } = req.params;
+
+   if (req.file === undefined) return response(402, "Bad Request", res, [{ path: "image", msg: "Invalid image extension" }]);
+
+   try {
+      await Venue.findOneAndUpdate({ _id }, { $set: { "images.0": req.file.filename } });
+      next();
+   } catch (err) {
+      console.error(err);
+   }
+};
+
+const deleteVenueById = async (req, res, next) => {
+   const { _id } = req.params;
+
+   try {
+      await Venue.findOneAndDelete({ _id });
+
+      next();
+   } catch (err) {
+      console.error(err);
+   }
+};
+
+module.exports = {
+   getAllVenues,
+   getVenueById,
+
+   addNewVenue,
+
+   replaceImage,
+   addNewField,
+
+   deleteVenueById,
+};

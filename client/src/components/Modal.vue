@@ -10,6 +10,11 @@ import Register from "../views/auth/Register.vue";
 import ConfirmCart from "../views/guest/components/ConfirmCart.vue";
 import BookingDetail from "../views/users/components/BookingDetail.vue";
 
+// Admin modal
+import DetailVenueModal from "../views/users/admin/components/DetailVenueModal.vue";
+import TambahVenueModal from "../views/users/admin/components/TambahVenueModal.vue";
+import DeleteVenueModal from "../views/users/admin/components/DeleteVenueModal.vue";
+
 import { store } from "../utils/store";
 
 export default {
@@ -19,6 +24,9 @@ export default {
       register: Register,
       "confirm-cart": ConfirmCart,
       "booking-detail": BookingDetail,
+      "detail-venue-modal": DetailVenueModal,
+      "tambah-venue-modal": TambahVenueModal,
+      "delete-venue-modal": DeleteVenueModal,
    },
    data() {
       return {

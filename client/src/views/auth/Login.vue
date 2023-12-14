@@ -12,7 +12,7 @@
             </p>
             <form @submit.prevent="onSubmit">
                <div class="mb-3">
-                  <input type="email" v-model="inputEmail" class="form-control" placeholder="Alamat Email" autofocus />
+                  <input type="email" v-model="inputEmail" class="form-control" placeholder="Alamat Email" />
                   <div v-if="errors.status" class="w-100 mx-auto text-start">
                      <small v-for="err in errors.data" class="text-danger fs-italic">
                         {{ err.path == "email" ? err.msg + " - " : "" }}
@@ -28,10 +28,7 @@
                   </div>
                </div>
                <div class="mb-3">
-                  <button type="submit" v-if="loading" class="border w-100 bg-body-secondary py-2 rounded-2 text-white" disabled>
-                     <Loading size="20px" color="border-secondary" thick="3px" />
-                  </button>
-                  <button type="submit" v-else class="border-0 w-100 bg-navy py-2 rounded-2 text-white">Selanjutnya</button>
+                  <loading-button btn-text="Selanjutnya" :loading="loading" />
                </div>
             </form>
          </div>
@@ -42,12 +39,12 @@
 <script>
 import { RouterLink } from "vue-router";
 import { store } from "../../utils/store";
-import axios from "axios";
 
-import Loading from "../../components/Loading.vue";
+import axios from "axios";
+import LoadingButton from "../../components/buttons/LoadingButton.vue";
 
 export default {
-   components: { Loading },
+   components: { "loading-button": LoadingButton },
    data() {
       return {
          inputEmail: "",
