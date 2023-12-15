@@ -1,5 +1,6 @@
 const response = require("../response");
 const validator = require("validator");
+const jwt = require("jsonwebtoken");
 
 const { body, validationResult } = require("express-validator");
 const { comparePassword } = require("./hash");
@@ -144,3 +145,20 @@ module.exports.addVenueValidation = [
       next();
    },
 ];
+
+module.exports.tokenValidation = async (req, res, next) => {
+   const token = req.headers["auth-token"];
+
+   if (token) {
+      try {
+         const decoded = jwt.verify(token, "apaantuh");
+         req.params._id = decoded._id;
+
+         next();
+      } catch (err) {
+         console.error(err);
+      }
+   } else {
+      return response(404, "There was not token", res, null);
+   }
+};

@@ -12,6 +12,7 @@
 
 <script>
 import Alert from "../components/Alert.vue";
+import { exchangeToken } from "../utils";
 import { store } from "../utils/store";
 
 export default {
@@ -21,6 +22,11 @@ export default {
       return {
          store,
       };
+   },
+   created() {
+      if (localStorage.getItem("martoken") && store.auth === false) {
+         exchangeToken();
+      }
    },
 };
 </script>

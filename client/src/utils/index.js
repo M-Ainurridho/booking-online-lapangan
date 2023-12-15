@@ -1,3 +1,7 @@
+import axios from "axios";
+import { apiUrl } from "../config/const";
+import { store } from "./store";
+
 export const setTitle = (title) => {
    document.title = title;
 };
@@ -20,4 +24,30 @@ export const timeString = (time) => {
 
 export const dateString = (date) => {
    return new Date(date).toDateString().split(" ");
+};
+
+export const exchangeToken = async () => {
+   const token = localStorage.getItem("martoken");
+
+   try {
+      if (token) {
+         axios.defaults.headers.common["auth-token"] = token;
+
+         const response = await axios.post(apiUrl("auth/exchange-token"));
+
+         if (response.data.payload.carts.fields.length > 0) {
+            store.setCarts(response.data.payload.carts);
+         }
+
+         store.setUser(response.data.payload);
+         store.setAuth(true);
+         store.setModal();
+      } else {
+         delete axios.defaults.headers.common["auth-token"];
+      }
+   } catch (err) {
+      console.error(err);
+   } finally {
+      return;
+   }
 };

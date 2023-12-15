@@ -2,6 +2,7 @@ const Temp = require("../models/temp-model");
 const User = require("../models/user-model");
 const response = require("../response");
 const { hashPassword, comparePassword } = require("../utils/hash");
+const jwt = require("jsonwebtoken");
 
 const login = async (req, res) => {
    const { email, password } = req.body;
@@ -12,7 +13,8 @@ const login = async (req, res) => {
       if (user === null) return response(402, "Bad Request", res, [{ path: "email", msg: "Email is't registered" }]);
       if (!comparePassword(password, user.password)) return response(402, "Bad Request", res, [{ path: "password", msg: "Wrong password" }]);
 
-      response(200, "Logged In", res, user);
+      const token = jwt.sign({ _id: user._id }, "apaantuh", { expiresIn: "1h" });
+      response(200, "Login Token", res, { token });
    } catch (err) {
       console.log("error: ", err);
    }

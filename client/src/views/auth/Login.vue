@@ -39,6 +39,7 @@
 <script>
 import { RouterLink } from "vue-router";
 import { store } from "../../utils/store";
+import { exchangeToken } from "../../utils";
 
 import axios from "axios";
 import LoadingButton from "../../components/buttons/LoadingButton.vue";
@@ -63,14 +64,11 @@ export default {
 
          try {
             const response = await axios.post("http://localhost:3000/auth/login", { email: this.inputEmail, password: this.inputPassword });
-            store.setUser(response.data.payload);
 
-            if (response.data.payload.carts.fields.length > 0) {
-               store.setCarts(response.data.payload.carts);
-            }
+            localStorage.setItem("martoken", response.data.payload.token);
+            
+            await exchangeToken();
 
-            store.setAuth(true);
-            store.setModal();
             this.loading = !this.loading;
          } catch (err) {
             this.errors.status = true;

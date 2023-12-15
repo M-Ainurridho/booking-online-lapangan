@@ -49,6 +49,7 @@
 import { RouterLink } from "vue-router";
 import { store } from "../utils/store";
 import Cart from "./Cart.vue";
+import axios from "axios";
 
 export default {
    components: { Cart },
@@ -65,6 +66,9 @@ export default {
          this.offcanvas = !this.offcanvas;
       },
       logout() {
+         localStorage.removeItem("martoken");
+         delete axios.defaults.headers.common["auth-token"];
+
          store.setAuth(false);
          store.setUser();
          store.setCarts();
